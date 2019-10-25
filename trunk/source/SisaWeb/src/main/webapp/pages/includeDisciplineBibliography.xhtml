@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+</h:head>
+
+<h:body>
+		<p:dialog id="saveDisciplineBibliographyDiag" widgetVar="saveDisciplineBibliographyDialog" resizable="true" modal="true">
+			<h:form id="formIncludeDisciplineBibliography" prependId="false">
+	
+				<p:outputPanel styleClass="form">
+	
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_discipline_bibliography}" rendered="#{disciplineBibliographyBean.editDisciplineBibliography}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_discipline_bibliography}" rendered="#{!disciplineBibliographyBean.editDisciplineBibliography}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />
+	
+					<p:panel>
+						<h:panelGrid id="saveDisciplineBibliographyGrid" columns="3" columnClasses="labels">
+	
+							<p:outputLabel for="discipline" value="#{msg.lbl_discipline_discipline_bibliography}" />
+							<p:selectOneMenu id="discipline"
+									value="#{disciplineBibliographyBean.discipline}"								
+									converter="disciplineConverter"
+									styleClass="inputSelect"
+									required="true"
+						   			requiredMessage="#{msg.lbl_required_field}">
+								<p:ajax listener="#{disciplineBibliographyBean.disciplineChange()}" update="bibliographyPickList"/>
+								<f:selectItems 
+									value="#{disciplineBibliographyBean.disciplinesList}"
+									var="element" 
+									itemValue="#{element}"
+									itemLabel="#{element.name}" />
+							</p:selectOneMenu>
+							<p:message for="discipline" />
+							
+							<p:outputLabel for="isBasic" value="#{msg.lbl_bibliography_type}" />
+							<p:selectOneMenu id="isBasic"
+									value="#{disciplineBibliographyBean.basic}"								
+									styleClass="inputSelect">
+									
+									<p:ajax listener="#{disciplineBibliographyBean.basicChanged}"/>
+									
+								<f:selectItem itemLabel="#{msg.lbl_basic_bibliography}" itemValue="true"/>
+								<f:selectItem itemLabel="#{msg.lbl_complementary_bibliography}" itemValue="false"/>
+							</p:selectOneMenu>
+							<p:message for="isBasic" />						
+							
+							<p:outputLabel for="bibliographyPickList" value="#{msg.lbl_bibliography_discipline_bibliography}" />
+							<p:pickList id="bibliographyPickList" var="element" 
+									value="#{disciplineBibliographyBean.dualListBibliographies}"
+									converter="pickListConverter"									
+									itemValue="#{element}" 
+									itemLabel="#{element.getTitleFormatted()}">
+								
+								<f:facet name="sourceCaption">
+									<h:outputText value="#{msg.lbl_available_bibliography_discipline_bibliography}"/>									
+								</f:facet>
+        						<f:facet name="targetCaption">
+									<h:outputText value="#{msg.lbl_selected_bibliography_discipline_bibliography}"/>
+								</f:facet>
+								
+								<p:ajax event="transfer" listener="#{disciplineBibliographyBean.onTransfer}" update="bibliographyPickList"/>
+							
+							</p:pickList>
+							<p:message for="bibliographyPickList" />							
+	
+						</h:panelGrid>
+	
+						<p:separator styleClass="separator" />
+	
+						<h:panelGroup styleClass="btnSave">
+							<p:commandButton value="#{msg.lbl_cancel}" styleClass="btnCancel"
+								onclick="formIncludeDisciplineBibliography.hide();"
+								process="@this" immediate="true" ajax="true" />
+	
+							<p:commandButton value="Salvar" ajax="true"
+								actionListener="#{disciplineBibliographyBean.save}"
+								update=":formIncludeDisciplineBibliography:msgGeral, :formListDisciplineBibliography, saveDisciplineBibliographyGrid"
+								id="buttonSaveDisciplineBibliography" />
+						</h:panelGroup>
+					</p:panel>
+	
+					<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+				</p:outputPanel>
+	
+			</h:form>
+		</p:dialog>
+</h:body>
+</html>

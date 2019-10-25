@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveClassProgrammingDiag" widgetVar="saveClassProgrammingDialog" resizable="true" modal="true">
+			<h:form id="formIncludeClassProgramming" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_class_programming}" rendered="#{bean.editClassProgramming}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_class_programming}" rendered="#{!bean.editClassProgramming}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveClassProgrammingGrid" columns="4" columnClasses="labels">							
+										
+							<p:outputLabel rendered="#{bean.teachingPlanIsVisible}"
+									for="teachingPlan" 
+									value="#{msg.lbl_teaching_plan_class_programming}"/>
+							<p:selectOneMenu id="teachingPlan"
+	                      			value="#{bean.classProgramming.teachingPlan}"
+	                      			styleClass="inputSelect" 
+	                      			converter="teachingPlanConverter"
+	                      			rendered="#{bean.teachingPlanIsVisible}"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItems 
+	           						value="#{teachingPlanBean.teachingPlansList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.teachingPlanLabel}" />
+	       					</p:selectOneMenu>
+	       					<p:outputLabel rendered="#{bean.teachingPlanIsVisible}"/>
+					        <p:message for="teachingPlan" rendered="#{bean.teachingPlanIsVisible}" />
+											
+							<p:outputLabel for="content" value="#{msg.lbl_content_class_programming}"/>
+							<p:inputTextarea id="content" rows="3" cols="80" counter="displayContent" 
+								styleClass="inputTextArea" 
+								maxlength="300" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								value="#{bean.classProgramming.content}" 
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<h:outputText id="displayContent" styleClass="wordsCounter" />					   			
+							<p:message for="content" />							
+														
+							<p:outputLabel for="classesQuantity" value="#{msg.lbl_classes_quantity_class_programming}"/>
+					   		<p:inputMask id="classesQuantity" 
+					   			value="#{bean.classProgramming.classesQuantity}"  
+					   			styleClass="inputs" 
+					   			maxlength="3" 
+					   			placeHolder=""
+					   			mask="9?99"
+					   			required="true"
+					   			requiredMessage="#{msg.lbl_required_field}">
+					   			<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+				   			<p:outputLabel/>
+				   			<p:message for="classesQuantity" />
+				   			
+				   			<p:outputLabel for="classType" value="#{msg.lbl_class_type_class_programming}"/>
+							<p:selectOneMenu id="classType" 
+									value="#{bean.classProgramming.classType}"  
+									styleClass="inputSelect" 
+									required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+								<f:selectItems 
+	           						value="#{enumHelper.classTypes}" 
+	           						var="element" 
+	           						itemValue="#{element.index}" 
+	           						itemLabel="#{element.label}"/>								
+					        </p:selectOneMenu>
+							<p:outputLabel/>
+							<p:message for="classType" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeClassProgramming.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{bean.save}"
+			    					update =":formIncludeClassProgramming:msgGeral, :formListClassProgramming, saveClassProgrammingGrid"
+			    					id="buttonSaveClassProgramming"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

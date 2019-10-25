@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_bibliography_page}</title>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeBibliography.xhtml" />
+
+		<h:form id="formListBibliography" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_bibliography}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="bibliographiesTable" fileName="#{msg.file_bibliography}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_pdf}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="bibliographiesTable" fileName="#{msg.file_bibliography}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+						ajax="true" value="#{msg.lbl_add_entity}"
+						rendered="#{bibliographyBean.canInsert}"
+						oncomplete="PF('saveBibliographyDialog').show()"
+						update=":formIncludeBibliography"
+						actionListener="#{bibliographyBean.cleanBibliography}">
+						<p:ajax update=":formIncludeBibliography" resetValues="true" />  
+					</p:commandButton>
+				</p:outputPanel>
+	
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+
+				<p:dataTable id="bibliographiesTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+					value="#{bibliographyBean.bibliographiesList}" paginator="true"
+					paginatorPosition="bottom" rows="10"					
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="bibliographiesTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{bibliographyBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+	
+					<p:column width="120"
+							headerText="#{msg.lbl_bibliography_type}"
+							sortBy="#{enumHelper.getBibliographyLabel(element.bibliographyType)}"
+							filterBy="#{enumHelper.getBibliographyLabel(element.bibliographyType)}"
+							filterMatchMode="contains">
+						<h:outputText value="#{enumHelper.getBibliographyLabel(element.bibliographyType)}" title="#{enumHelper.getBibliographyLabel(element.bibliographyType)}"/>
+					</p:column>
+					<p:column width="280"
+							headerText="#{msg.lbl_title_bibliography}"
+							sortBy="#{element.title}"
+							filterBy="#{element.title}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.title}" title="#{element.title}"/>
+					</p:column>
+					<p:column width="280"
+							headerText="#{msg.lbl_subtitle_bibliography}"
+							sortBy="#{element.subtitle}"
+							filterBy="#{element.subtitle}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.subtitle}" title="#{element.subtitle}"/>
+					</p:column>					
+					<p:column width="120"
+							headerText="#{msg.lbl_edition_bibliography}"
+							sortBy="#{element.edition}"
+							filterBy="#{element.edition}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.edition}" title="#{element.edition}"/>
+					</p:column>
+					<p:column width="200"
+							headerText="#{msg.lbl_city_place_bibliography}"
+							sortBy="#{element.cityPlace}"
+							filterBy="#{element.cityPlace}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.cityPlace}" title="#{element.cityPlace}"/>
+					</p:column>
+					<p:column width="200"
+							headerText="#{msg.lbl_publisher_bibliography}"
+							sortBy="#{element.publisher}"
+							filterBy="#{element.publisher}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.publisher}" title="#{element.publisher}"/>
+					</p:column>
+					<p:column width="120"
+							headerText="#{msg.lbl_year_bibliography}"
+							sortBy="#{element.year}"
+							filterBy="#{element.year}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.year}" title="#{element.year}"/>
+					</p:column>
+					<p:column width="80"
+							headerText="#{msg.lbl_pages_bibliography}"
+							sortBy="#{element.pages}">
+						<h:outputText value="#{element.pages}" title="#{element.pages}"/>
+					</p:column>
+					<p:column width="80"
+							headerText="#{msg.lbl_volume_bibliography}"
+							sortBy="#{element.volume}">
+						<h:outputText value="#{element.volume}" title="#{element.volume}"/>
+					</p:column>
+					<p:column width="80"
+							headerText="#{msg.lbl_series_bibliography}"
+							sortBy="#{element.series}">
+						<h:outputText value="#{element.series}" title="#{element.series}"/>
+					</p:column>	
+					<p:column width="120"
+							headerText="#{msg.lbl_isbn_bibliography}"
+							sortBy="#{element.isbn}"
+							filterBy="#{element.isbn}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.isbn}" title="#{element.isbn}"/>
+					</p:column>
+																	
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{bibliographyBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_bibliography}" ajax="true"
+							actionListener="#{bibliographyBean.loadBibliography(element)}"
+							update=":formIncludeBibliography"
+							oncomplete="PF('saveBibliographyDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{bibliographyBean.canDelete}">
+						<p:commandLink title="#{msg.lbl_delete_bibliography}" ajax="true"
+							actionListener="#{bibliographyBean.delete(element)}"
+							update=":formListBibliography">
+							<p:graphicImage value="/images/bt-deletar.png" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+	
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

@@ -1,0 +1,128 @@
+@import url("site.css");
+
+.labels{
+	margin-top: 35px;
+	margin-bottom: -15px;
+	width: 57px;
+}
+
+.inputs{
+	margin-top: -5px;
+}
+
+.ui-outputlabel{
+	display: block;
+	margin-top: 25px;
+}
+
+.adminPanel .loginPanel{
+	margin-top: 15px;
+	height: 260px;
+	background: #B7DD86 none;
+}
+
+.loginPanel .ui-toolbar-group-left{
+	margin-top: 6px;
+	margin-left: 45px;
+	font-size: 12px;
+}
+
+.loginPanel .ui-inputfield{
+	width: 280px;
+}
+
+form > .ui-inputfield{
+	margin-left: 60px;
+	margin-top: -5px;
+	margin-bottom: -5px;
+}
+
+.btnLogin{
+	float: right;
+	margin-right: -108px;
+	margin-top: 25px;
+}
+
+.recoveryPassword a{
+	text-decoration: none;
+	float: right;
+	margin-top: 78px;
+	margin-right: 4px;
+	font-weight: normal;
+}
+
+.textRecoveryPassword{
+	font-weight: normal;
+	margin: 15px 0px -10px -1px;
+	display: block;
+}
+
+.adminPanel{
+	font-size: 20px;
+	width: 450px;
+	margin: 90px auto;
+    margin-top: 10%;
+}
+
+.adminRecoveryPanel .loginPanel{
+	margin-top: 15px;
+	height: 220px;
+	background: #B7DD86 none;
+}
+
+.panelBtnRecovery{
+	margin-top: 55px;
+	text-align: right;	
+}
+
+.recovery {	
+	float: right;
+	width: 150px;
+	height: 40px;	
+	margin-right: 5px;
+	text-shadow: 0px 0px 0px !important;
+	box-shadow:inset 0px 0px 0px #fff !important;
+	color: #FFF !important;	
+	background: #5CB85C !important;
+	background-color: #5CB85C !important;
+	border-color: #4CAE4C !important;
+}
+
+.backButtonRecovery{
+	float: left;
+	width: 150px;
+	height: 40px;	
+	margin-right: 50px;	
+}
+
+.textForgotPwd{
+	font-weight: normal;
+	margin: 15px 0px -10px -1px;
+	display: block;
+}
+
+.btnSend{
+	float: right;
+	margin-top: 24px;
+	margin-right: 5px;
+}
+
+.return{
+	float: right;
+	margin-top: 63px;
+	margin-right: -64px;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.message{
+	width: 220px;
+	height: 3px;
+	margin-top: 5px;
+	margin-left: 55px;
+}
+
+.ui-outputlabel.ui-state-error{
+	background: none;
+	color: #000;
+}

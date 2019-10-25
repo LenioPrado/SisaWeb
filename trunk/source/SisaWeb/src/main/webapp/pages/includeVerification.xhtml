@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveVerificationDialog" widgetVar="saveVerificationDialog" resizable="true" modal="true">
+			<h:form id="formIncludeVerification" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_verification}" rendered="#{verificationBean.editVerification}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_verification}" rendered="#{!verificationBean.editVerification}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveVerificationGrid" columns="4" columnClasses="labels">		
+							
+							<p:outputLabel for="creationDate" value="#{msg.lbl_creation_date_verification}"/>
+							<p:calendar id="creationDate" 
+										value="#{verificationBean.verification.creationDate}"
+										pattern="dd/MM/yyyy HH:mm"
+										mask="true"
+										styleClass="inputs"
+										showOn="button" 
+										locale="pt_BR"
+										readonlyInput="true"
+										converter="timestampConverter"
+										required="true"
+										requiredMessage="#{msg.lbl_required_field}">
+								<p:ajax event="dateSelect" update="evaluationDate" />			
+							</p:calendar>								
+							<p:message for="creationDate" />
+							<p:outputLabel/>
+							
+							<p:outputLabel for="evaluationDate" value="#{msg.lbl_evaluation_date_verification}"/>
+							<p:calendar id="evaluationDate" 
+										value="#{verificationBean.verification.evaluationDate}"
+										pattern="dd/MM/yyyy HH:mm"
+										mask="true"
+										styleClass="inputs"
+										showOn="button" 
+										locale="pt_BR"
+										readonlyInput="true"
+										converter="timestampConverter"
+										required="true"
+										requiredMessage="#{msg.lbl_required_field}"
+										mindate="#{verificationBean.verification.creationDate}">
+								<f:attribute name="creationDate" value="#{verificationBean.verification.creationDate}" />
+    							<f:validator validatorId="timestampRangeValidator" />
+							</p:calendar>								
+							<p:message for="evaluationDate" />
+							<p:outputLabel/>
+							
+							<p:outputLabel for="observation" value="#{msg.lbl_observation_verification}"/>
+							<p:inputTextarea id="observation" rows="3" cols="80" counter="displayObservation"
+								value="#{verificationBean.verification.observation}"  
+								styleClass="inputTextArea"
+								maxlength="300" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+					   		<h:outputText id="displayObservation" styleClass="wordsCounter" />
+							<p:message for="observation" />
+							
+							<p:outputLabel for="status" value="#{msg.lbl_status_verification}"/>
+							<p:selectOneMenu id="status" 
+									value="#{verificationBean.verification.status}"  
+									styleClass="inputSelect" 
+									required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+								<f:selectItems 
+	           						value="#{enumHelper.verificationStatus}" 
+	           						var="element" 
+	           						itemValue="#{element.index}" 
+	           						itemLabel="#{element.label}"/>
+					        </p:selectOneMenu>							
+							<p:message for="status" />
+							<p:outputLabel/>
+					        
+							<p:outputLabel for="teachingPlan" value="#{msg.lbl_teaching_plan_verification}"/>
+							<p:selectOneMenu id="teachingPlan"
+	                      			value="#{verificationBean.verification.responsible.teachingPlan}"
+	                      			styleClass="inputSelect" 
+	                      			converter="teachingPlanConverter"
+	                      			required="true"
+					   			 	requiredMessage="#{msg.lbl_required_field}">
+					   			 <p:ajax listener="#{verificationBean.teachingPlanChanged}" update="responsible" />
+	       						<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+	       									noSelectionOption="true" />
+	           					<f:selectItems 
+	           						value="#{teachingPlanBean.teachingPlansList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.teachingPlanLabel}" />
+	       					</p:selectOneMenu>
+					        <p:message for="teachingPlan" />
+					        <p:outputLabel/>
+					        
+							<p:outputLabel for="responsible" value="#{msg.lbl_responsible_verification}"/>
+							<p:selectOneMenu id="responsible"
+	                      			value="#{verificationBean.verification.responsible}"
+	                      			styleClass="inputSelect" 
+	                      			converter="responsibleConverter"
+	                      			required="true"
+					   			 	requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+	       									noSelectionOption="true" />
+	           					<f:selectItems 
+	           						value="#{verificationBean.responsiblesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.responsibleId} - #{element.userRole.role.name} - #{element.userRole.user.name}" />
+	       					</p:selectOneMenu>
+					        <p:message for="responsible" />
+					        <p:outputLabel/>
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeVerification.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{verificationBean.save}"
+			    					update =":formIncludeVerification:msgGeral, :formListVerification, saveVerificationGrid"
+			    					id="buttonSaveVerification"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

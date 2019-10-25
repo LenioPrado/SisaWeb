@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:form id="formListClassProgramming" prependId="false">		
+		<p:outputPanel styleClass="form">
+	
+			<p:outputPanel styleClass="fixedHeightPanel">
+				<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_class_programming}" />
+	
+				<p:outputPanel styleClass="export">
+					<h:commandLink title="#{msg.lbl_export_excel}">
+						<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+						<p:dataExporter type="csv" target="classProgrammingsTable" fileName="#{msg.file_class_programming}" pageOnly="false" encoding="UTF-8"/>
+					</h:commandLink>
+					<h:commandLink title="#{msg.lbl_export_excel}">
+						<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+						<p:dataExporter type="pdf" target="classProgrammingsTable" fileName="#{msg.file_class_programming}" pageOnly="false" encoding="iso-8859-1"/>
+					</h:commandLink>
+				</p:outputPanel>		
+	
+				<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+					ajax="true" value="#{msg.lbl_add_entity}"
+					rendered="#{bean.canInsert}"
+					oncomplete="PF('saveClassProgrammingDialog').show()"
+					update=":formIncludeClassProgramming"
+					actionListener="#{bean.cleanClassProgramming}">
+					<p:ajax update=":formIncludeClassProgramming" resetValues="true" />  
+				</p:commandButton>
+				
+				<p:commandButton styleClass="btnAdd" icon="ui-icon-back"
+					ajax="true" value="#{msg.lbl_back_to_teaching_plan_fill}"
+					rendered="#{!bean.teachingPlanIsVisible}"					
+					action="#{bean.backToTeachingPlanFill}"/>					
+			</p:outputPanel>
+			
+			<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+	
+			<p:dataTable id="classProgrammingsTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+				value="#{bean.classProgrammingsList}" paginator="true"
+				paginatorPosition="bottom" rows="10"
+				rowsPerPageTemplate="10,20,30,40,50" widgetVar="classProgrammingsTable"
+				scrollable="true" scrollHeight="300" scrollWidth="100%"
+				filteredValue="#{bean.filtered}"
+				emptyMessage="#{msg.lbl_no_records_found}">
+	
+				<p:column width="300"
+					headerText="#{msg.lbl_teaching_plan_class_programming}"
+					sortBy="#{element.teachingPlan.teachingPlanLabel}"
+					filterBy="#{element.teachingPlan.teachingPlanLabel}"
+					filterMatchMode="in">
+					<f:facet name="filter">
+						<p:selectCheckboxMenu label="#{msg.lbl_teaching_plans}" 
+								onchange="PF('classProgrammingsTable').filter()" 
+								styleClass="inputFilterSelect" >
+		                    <f:selectItems value="#{teachingPlanBean.teachingPlansList}" 
+	          						var="element" 
+	          						itemValue="#{element.teachingPlanLabel}" 
+	          						itemLabel="#{element.teachingPlanLabel}" />
+		                </p:selectCheckboxMenu>
+					</f:facet>
+					<h:outputText value="#{element.teachingPlan.teachingPlanLabel}" title="#{element.teachingPlan.teachingPlanLabel}"/>
+				</p:column>
+	
+				<p:column width="400"
+						headerText="#{msg.lbl_content_class_programming}"
+						sortBy="#{element.content}"
+						filterBy="#{element.content}"
+						filterMatchMode="contains"
+						styleClass="inputFilterText">
+					<h:outputText value="#{element.content}" title="#{element.content}"/>
+				</p:column>
+				<p:column width="130"
+						headerText="#{msg.lbl_classes_quantity_class_programming}"
+						sortBy="#{element.classesQuantity}"
+						filterBy="#{element.classesQuantity}"
+						filterMatchMode="contains">
+					<h:outputText value="#{element.classesQuantity}" title="#{element.classesQuantity}"/>
+				</p:column>
+				<p:column width="160"
+					headerText="#{msg.lbl_class_type_class_programming}"
+					sortBy="#{enumHelper.getClassTypeLabel(element.classType)}"
+					filterBy="#{enumHelper.getClassTypeLabel(element.classType)}"
+					filterMatchMode="in">
+					<f:facet name="filter">
+						<p:selectCheckboxMenu label="#{msg.lbl_class_types}" 
+								onchange="PF('classProgrammingsTable').filter()" 
+								styleClass="inputFilterSelectSmall" >
+		                    <f:selectItems value="#{enumHelper.classTypes}" 
+	          						var="element" 
+	          						itemValue="#{element.label}" 
+	          						itemLabel="#{element.label}"/>
+		                </p:selectCheckboxMenu>
+					</f:facet>
+					<h:outputText value="#{enumHelper.getClassTypeLabel(element.classType)}" title="#{enumHelper.getClassTypeLabel(element.classType)}"/>
+				</p:column>					
+	
+				<p:column styleClass="columnEditDelete" exportable="false" rendered="#{bean.canEdit}">
+					<p:commandLink title="#{msg.lbl_edit_class_programming}" ajax="true"
+						actionListener="#{bean.loadClassProgramming(element)}"
+						update=":formIncludeClassProgramming"
+						oncomplete="PF('saveClassProgrammingDialog').show()">
+						<p:graphicImage value="/images/bt-editar.png" />
+					</p:commandLink>
+				</p:column>
+				<p:column styleClass="columnEditDelete" exportable="false" rendered="#{bean.canDelete}">
+					<p:commandLink title="#{msg.lbl_delete_class_programming}" ajax="true"
+						actionListener="#{bean.delete(element)}"
+						update=":formListClassProgramming">
+						<p:graphicImage value="/images/bt-deletar.png" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+	
+		</p:outputPanel>
+	
+	</h:form>
+
+</html>

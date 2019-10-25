@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_action_page}</title>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeAction.xhtml" />
+	
+		<h:form id="formListAction" prependId="false">		
+			<p:outputPanel styleClass="form">
+				
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_action}" />
+					
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="pageTable" fileName="#{msg.lbl_page_report}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_pdf}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="actionsTable" fileName="#{msg.file_action}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+						ajax="true" value="#{msg.lbl_add_entity}"
+						rendered="#{actionBean.canInsert}"
+						oncomplete="PF('saveActionDialog').show()"
+						update=":formIncludeAction"
+						actionListener="#{actionBean.cleanAction}">
+						<p:ajax update=":formIncludeAction" resetValues="true" />  
+					</p:commandButton>
+				</p:outputPanel>
+	
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />	
+	
+				<p:dataTable id="actionsTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+					value="#{actionBean.actionsList}" paginator="true"
+					paginatorPosition="bottom" rows="10" 				
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="ActionsTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{actionBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+	
+					<p:column headerText="#{msg.lbl_description_action}"
+							sortBy="#{element.description}"
+							filterBy="#{element.description}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.description}" title="#{element.description}"/>
+					</p:column>
+					
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{actionBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_Action}" ajax="true"
+							actionListener="#{actionBean.loadAction(element)}"
+							update=":formIncludeAction"
+							oncomplete="PF('saveActionDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{actionBean.canDelete}">
+						<p:commandLink title="#{msg.lbl_delete_Action}" ajax="true"
+							actionListener="#{actionBean.delete(element)}"
+							update=":formListAction">
+							<p:graphicImage value="/images/bt-deletar.png" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+	
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

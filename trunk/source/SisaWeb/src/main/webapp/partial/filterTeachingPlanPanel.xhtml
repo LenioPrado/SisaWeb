@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">  
+      
+	<p:panel header="#{msg.lbl_filters_panel_teaching_plan}" toggleable="true"  
+			toggleSpeed="500" closeSpeed="500" style="margin-bottom:20px">
+		<h:panelGrid columns="2" columnClasses="labels">
+			
+			<h:panelGrid columns="2" columnClasses="labels" style="margin-right:125px;">
+				<p:outputLabel for="course" value="#{msg.lbl_course_campus_course}"/>
+				<p:selectOneMenu id="course"
+						value="#{completeTeachingPlanBean.course}"
+						converter="courseConverter"
+						styleClass="inputSelect" >
+		   			<p:ajax listener="#{completeTeachingPlanBean.courseChanged}" 
+		   					update="ppcSelect, disciplineSelect, teachingPlan, completeTeachingPlan" />
+		   			<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+		   				noSelectionOption="true"/>
+      					<f:selectItems 
+      						value="#{courseBean.coursesList}" 
+      						var="element" 
+      						itemValue="#{element}" 
+      						itemLabel="#{element.name}" />
+    				</p:selectOneMenu>
+				
+				<p:outputLabel for="ppcSelect" value="#{msg.lbl_list_ppc_teaching_plan}"/>
+				<p:selectOneMenu id="ppcSelect"
+                  			value="#{completeTeachingPlanBean.ppc}"
+                  			converter="ppcConverter"
+                  			styleClass="inputSelect" >
+		   			<p:ajax listener="#{completeTeachingPlanBean.ppcChanged}" 
+		   					update="disciplineSelect, teachingPlan, completeTeachingPlan" />
+      					<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+      						noSelectionOption="true" />
+      					<f:selectItems 
+      						value="#{completeTeachingPlanBean.ppcsList}" 
+      						var="element" 
+      						itemValue="#{element}" 
+      						itemLabel="#{element.course.shortName}" />
+     				</p:selectOneMenu>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" columnClasses="labels">
+				<p:outputLabel for="disciplineSelect" value="#{msg.lbl_list_discipline_teaching_plan}"/>
+				<p:selectOneMenu id="disciplineSelect"
+                  			value="#{completeTeachingPlanBean.discipline}"
+                  			converter="disciplineConverter"
+                  			styleClass="inputSelect" >
+		   			<p:ajax listener="#{completeTeachingPlanBean.disciplineChanged}" 
+		   					update="teachingPlan, completeTeachingPlan" />
+		   			<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+		   				noSelectionOption="true"/>
+      					<f:selectItems 
+      						value="#{completeTeachingPlanBean.disciplinesList}" 
+      						var="element" 
+      						itemValue="#{element}" 
+      						itemLabel="#{element.name}" />
+     				</p:selectOneMenu>
+
+				<p:outputLabel for="teachingPlan" value="#{msg.lbl_list_teaching_plan}"/>					
+				<p:selectOneMenu id="teachingPlan"
+						value="#{completeTeachingPlanBean.teachingPlan}"
+						styleClass="inputSelect" 
+	        			converter="teachingPlanConverter" >
+					<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+						noSelectionOption="true"/>
+					<f:selectItems 
+						value="#{completeTeachingPlanBean.teachingPlansList}" 
+						var="element" 
+						itemValue="#{element}" 
+						itemLabel="#{element.teachingPlanLabel}"/>
+					<p:ajax listener="#{completeTeachingPlanBean.teachingPlanChanged}" update="completeTeachingPlan, :formCompleteTeachingPlan"/>
+				</p:selectOneMenu>	
+			</h:panelGrid>
+
+		</h:panelGrid>
+	</p:panel>
+</html>  

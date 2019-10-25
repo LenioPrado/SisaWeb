@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_user_role_page}</title>
+		<script type="text/javascript" src="#{request.contextPath}/js/expander.js"></script>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeUserRole.xhtml" />
+
+		<h:form id="formListUserRole" prependId="false">		
+			<p:outputPanel styleClass="form">
+
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_user_role}" />
+	
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="userRolesTable" fileName="#{msg.file_user_role}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_pdf}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="userRolesTable" fileName="#{msg.file_user_role}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:outputPanel styleClass="emptyPanel">
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+				
+				<p:dataTable id="userRolesTable" var="element" styleClass="tableList"
+					value="#{userRoleBean.usersList}" paginator="true"
+					paginatorPosition="bottom" rows="10" 
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="userRolesTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{userRoleBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+					
+					<p:ajax event="rowToggle" onstart="closeOpennedExpander();"/>  
+		        
+					<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>			        
+        
+					<p:column headerText="#{msg.lbl_name_user}"
+							sortBy="#{element.name}"
+							filterBy="#{element.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.name}" title="#{element.name}"/>
+					</p:column>
+					
+					<p:column headerText="#{msg.lbl_email_user}"
+							sortBy="#{element.email}"
+							filterBy="#{element.email}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.email}" title="#{element.email}"/>
+					</p:column>
+					
+					<p:column styleClass="columnEditDelete" exportable="false"
+							  rendered="#{userRoleBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_include_user_role}" ajax="true"
+							actionListener="#{userRoleBean.loadUnsetRoles(element)}"
+							update=":formIncludeUserRole"
+							oncomplete="PF('saveUserRoleDialog').show()">
+							<p:graphicImage value="/images/addMap3.png" />
+						</p:commandLink>
+					</p:column>								
+					
+					<p:rowExpansion style="padding:0px;">
+			            <f:facet name="header">
+							<h:outputText value="#{msg.lbl_role_user_role}" />
+						</f:facet>
+						
+				        <p:dataTable styleClass="tableList"
+				            value="#{element.userRoles}"
+				            var="subelement"
+				            filteredValue="#{ppcBean.subFiltered}"
+				            emptyMessage="#{msg.lbl_no_records_found}">
+				            
+				            <p:column headerText="#{msg.lbl_role_user_role}"
+					            	sortBy="#{subelement.role.name}"
+					            	filterBy="#{subelement.role.name}"
+									filterMatchMode="contains">
+				            	<h:outputText value="#{subelement.role.name}" title="#{subelement.role.name}"/>
+				            </p:column>
+				            <p:column headerText="#{msg.lbl_start_date_user_role}"
+				            	sortBy="#{subelement.startDateTitle}">
+				            	<h:outputText value="#{subelement.startDate}" title="#{subelement.startDateTitle}">
+				            		<f:convertDateTime pattern="dd/MM/yyyy" />
+				            	</h:outputText>
+				            </p:column>
+				            <p:column headerText="#{msg.lbl_end_date_user_role}"
+				            	sortBy="#{subelement.endDateTitle}">
+				            	<h:outputText value="#{subelement.endDate}" title="#{subelement.endDateTitle}">
+				            		<f:convertDateTime pattern="dd/MM/yyyy" />
+				            	</h:outputText>
+				            </p:column>
+				             <p:column headerText="#{msg.lbl_observation_role}"
+				             	sortBy="#{subelement.role.observation}"
+				             	filterBy="#{subelement.role.observation}"
+								filterMatchMode="contains">
+				            	<h:outputText value="#{subelement.role.observation}" title="#{subelement.role.observation}"/>
+				            </p:column>
+							<p:column styleClass="columnEditDelete" exportable="false">
+								<p:commandLink title="#{msg.lbl_delete_user_role}" ajax="true"
+									actionListener="#{userRoleBean.delete(subelement)}"
+									update=":formListUserRole">
+									<p:graphicImage value="/images/bt-deletar.png" />
+								</p:commandLink>
+							</p:column>	
+							
+							<p:column styleClass="columnEditDelete" exportable="false"
+									  rendered="#{userRoleBean.canDelete}">
+								<p:commandLink title="#{msg.lbl_edit_user_role}" ajax="true"
+									actionListener="#{userRoleBean.loadUserRole(subelement)}"
+									update=":formIncludeUserRole"
+									oncomplete="PF('saveUserRoleDialog').show()">
+									<p:graphicImage value="/images/bt-editar.png" />
+								</p:commandLink>
+							</p:column>						            
+				            
+				        </p:dataTable>
+			        </p:rowExpansion>		
+
+				</p:dataTable>					
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

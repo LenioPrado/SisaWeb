@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveTraineeshipDiag" widgetVar="saveTraineeshipDialog" resizable="true" modal="true">
+			<h:form id="formIncludeTraineeship" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_traineeship}" rendered="#{traineeshipBean.editTraineeship}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_traineeship}" rendered="#{!traineeshipBean.editTraineeship}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveTraineeshipGrid" columns="4" columnClasses="labels">		
+							
+							<p:outputLabel for="shortDescription" value="#{msg.lbl_short_description_traineeship}"/>
+							<p:inputMask id="shortDescription" 
+								value="#{traineeshipBean.traineeship.shortDescription}"  
+								styleClass="inputs"
+								maxlength="50"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="shortDescription" />
+							<p:outputLabel />
+														
+							<p:outputLabel for="description" value="#{msg.lbl_description_traineeship}"/>
+							<p:inputTextarea id="description" rows="13" cols="80" counter="display" 
+								styleClass="inputTextArea" 
+								maxlength="1000" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								value="#{traineeshipBean.traineeship.description}" 
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<h:outputText id="display" styleClass="wordsCounter" />
+							<p:message for="description" />
+							
+							<p:outputLabel for="hourLoad" value="#{msg.lbl_hour_load_traineeship}"/>
+							<p:inputMask id="hourLoad" 
+								value="#{traineeshipBean.traineeship.hourLoad}"  
+								styleClass="inputs"
+								maxlength="3"
+								placeHolder=""
+								mask = "?999"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" >
+				   				<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="hourLoad" />
+							<p:outputLabel />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeTraineeship.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{traineeshipBean.save}"
+			    					update =":formIncludeTraineeship:msgGeral, :formListTraineeship, saveTraineeshipGrid"
+			    					id="buttonSaveTraineeship"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

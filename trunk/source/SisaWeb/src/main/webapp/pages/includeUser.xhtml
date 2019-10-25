@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveUserDialog" widgetVar="saveUserDialog" resizable="false" modal="true">
+			<h:form id="formIncludeUser" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+    			
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_user}" rendered="#{userBean.editUser}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_user}" rendered="#{!userBean.editUser}"/>
+	    			<p:messages id="msgUser" for="msgUser" showDetail="true" showSummary="true" />	
+    			
+    				<p:panel styleClass="panels">	    			
+						<h:panelGrid id="saveUserGrid" columns="3" columnClasses="labelRegisterUser">
+						
+					   	    <p:outputLabel for="name" value="#{msg.lbl_name_user}"/>
+					   	    <p:inputText id="name"
+					   	    	value="#{userBean.user.name}" 
+					   	    	styleClass="inputName" 
+					   	    	maxlength="80" 
+					   	    	required="true" 
+					   	    	requiredMessage="#{msg.lbl_required_field}" />
+					   	    <p:message for="name" />
+					   	    	
+					   		<p:outputLabel for="email" value="#{msg.lbl_email_user}"/>
+					   		<p:inputText id="email" 
+					   			value="#{userBean.user.email}" 
+					   			styleClass="inputEmail" 
+					   			maxlength="50" 
+					   			required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" >
+					   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+				   			</p:inputText>
+					   		<p:message for="email" />
+	    				    
+	    				</h:panelGrid>
+						
+						<h:panelGrid id="passwordsGrid" styleClass="passwordGrid" columnClasses="labels" columns="3">	
+					   		
+					   		<p:outputLabel for="currentPassword" value="#{msg.lbl_current_password_user}" rendered="#{userBean.editUser}"/>
+					   		<p:password id="currentPassword"
+					   			value="#{userBean.user.currentPassword}" 
+					   			styleClass="inputs" 
+					   			maxlength="50"
+					   			rendered="#{userBean.editUser}"/>
+					   		<p:message for="currentPassword" />
+					   		
+					   		<p:outputLabel for="password" value="#{msg.lbl_password_user}"/>
+					   		<p:password id="password"
+					   			value="#{userBean.user.viewPassword}" 
+					   			styleClass="inputs" 
+					   			maxlength="50" 
+					   			match="confirmPassword"					   			
+					   			validatorMessage="#{msg.lbl_passwords_not_match}"/>
+					   		<p:message for="password" />
+					   			
+					   		<p:outputLabel for="confirmPassword" value="#{msg.lbl_confirm_password_user}"/>
+					   		<p:password id="confirmPassword"
+					   			value="#{userBean.user.viewPassword}" 
+					   			styleClass="inputs" 
+					   			maxlength="50" />
+	    				    <p:message for="confirmPassword" />	    				    
+    				    </h:panelGrid>
+
+						<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">				    		
+				    		<p:commandButton value="#{msg.lbl_cancel}"
+				    			styleClass="btnCancel"
+				    			onclick="formRegisterUser.hide();"
+				    			process="@this"
+	         					immediate="true"
+	         					ajax="true"/>
+	         				
+	         				<p:commandButton value="#{msg.lbl_save}"
+	         					ajax="true"
+				    			icon="ui-icon-check"
+				    			actionListener="#{userBean.save}"
+				    			update ="saveUserGrid, passwordsGrid, msgUser"
+				    			id="btnsave" />
+	         			</h:panelGroup>
+					</p:panel>	
+					
+					<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />				    	
+			    </p:outputPanel>
+				    
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

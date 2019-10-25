@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="savePpcDiag" widgetVar="savePpcDialog" resizable="true" modal="true">
+			<h:form id="formIncludePpc" prependId="false">    			
+    			
+    			<p:outputPanel styleClass="form">
+    			
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_ppc}" rendered="#{ppcBean.editPpc}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_ppc}" rendered="#{!ppcBean.editPpc}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+									   	
+				   	<p:panel styleClass="panels">			   	
+			            <h:panelGrid id="savePpcGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="course" value="#{msg.lbl_course_ppc}"/>
+							<p:selectOneMenu id="course"
+	                      			value="#{ppcBean.ppc.course}"
+	                      			styleClass="inputSelect" 
+	                      			converter="courseConverter"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItems 
+	           						value="#{courseBean.coursesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}"/>
+	       					</p:selectOneMenu>
+					        <h:outputText/>
+					        	
+							<p:outputLabel for="date" value="#{msg.lbl_date_ppc}"/>
+							<p:calendar	id="date" 
+										value="#{ppcBean.ppc.date}" 
+										pattern="dd/MM/yyyy"
+										mask="true"
+										styleClass="inputs"
+										showOn="button" 
+										locale="pt_BR"
+										required="true" 
+										requiredMessage="#{msg.lbl_required_field}" />
+					   	    <p:message for="date" />
+							
+							<p:outputLabel for="place" value="#{msg.lbl_place_ppc}"/>
+							<p:inputText id="place" 
+								value="#{ppcBean.ppc.place}"  
+								styleClass="inputs"
+								maxlength="250"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+					   		<p:message for="place" />
+							
+							<p:outputLabel for="classHour" value="#{msg.lbl_class_hour_ppc}"/>
+							<p:inputMask id="classHour"
+								value="#{ppcBean.ppc.classHour}"  
+								styleClass="inputs" 
+								maxlength="3"
+								mask="9?99"
+								placeHolder=""
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}">
+				   				<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+					   		<p:message for="classHour" />
+							
+							<p:outputLabel for="weeksNumber" value="#{msg.lbl_weeks_number_ppc}"/>
+					   		<p:inputMask id="weeksNumber" 
+					   			value="#{ppcBean.ppc.weeksNumber}"  
+					   			styleClass="inputs" 
+					   			maxlength="20" 
+					   			mask="9?999"
+					   			placeHolder=""
+					   			required="true"
+					   			requiredMessage="#{msg.lbl_required_field}">
+				   				<f:validateLongRange maximum="9999" minimum="1" />
+				   			</p:inputMask>
+				   			<p:message for="weeksNumber" />
+					        
+					        <p:outputLabel for="traineeship" value="#{msg.lbl_traineeship_ppc}"/>
+							<p:selectOneMenu id="traineeship"
+	                      			value="#{ppcBean.ppc.traineeship}"
+	                      			styleClass="inputSelect" 
+	                      			converter="traineeshipConverter"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItems 
+	           						value="#{traineeshipBean.traineeshipsList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.shortDescription}"/>
+	       					</p:selectOneMenu>
+					        <h:outputText/>
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludePpc.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{ppcBean.save}"
+			    					update =" :formIncludePpc:msgGeral, :formListPpc, savePpcGrid"
+			    					id="buttonSavePpc"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

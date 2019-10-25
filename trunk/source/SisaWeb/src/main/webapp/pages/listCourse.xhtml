@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_course_page}</title>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeCourse.xhtml" />
+	
+		<h:form id="formListCourse" prependId="false">		
+			<p:outputPanel styleClass="form">
+				
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_course}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="coursesTable" fileName="#{msg.file_course}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="coursesTable" fileName="#{msg.file_course}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+						rendered="#{courseBean.canInsert}"
+						ajax="true" value="#{msg.lbl_add_entity}"
+						oncomplete="PF('saveCourseDialog').show()"
+						update=":formIncludeCourse"
+						actionListener="#{courseBean.cleanCourse}">
+						<p:ajax update=":formIncludeCourse" resetValues="true" />  
+					</p:commandButton>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+			
+				<p:dataTable id="coursesTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+					value="#{courseBean.coursesList}" paginator="true"
+					paginatorPosition="bottom" rows="10"			
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="coursesTable"
+					scrollable="true" scrollHeight="300"  scrollWidth="100%"
+					filteredValue="#{courseBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+	
+					<p:column width="500"
+							headerText="#{msg.lbl_name_course}"
+							sortBy="#{element.name}"
+							filterBy="#{element.course.shortName}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.name}" title="#{element.name}"/>
+					</p:column>
+					<p:column width="350"
+							headerText="#{msg.lbl_short_name_course}"
+							sortBy="#{element.shortName}"
+							filterBy="#{element.course.shortName}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.shortName}" title="#{element.shortName}"/>
+					</p:column>					
+					<p:column width="180"
+						headerText="#{msg.lbl_modality_course}"
+						sortBy="#{enumHelper.getModalityLabel(element.modality)}"
+						filterBy="#{enumHelper.getModalityLabel(element.modality)}"
+						filterMatchMode="in">
+						<f:facet name="filter">
+							<p:selectCheckboxMenu label="#{msg.lbl_modalities}" 
+									onchange="PF('coursesTable').filter()" 
+									styleClass="inputFilterSelectSmall" >
+			                    <f:selectItems value="#{enumHelper.modalities}" 
+	           						var="element" 
+	           						itemValue="#{element.label}" 
+	           						itemLabel="#{element.label}"/>
+			                </p:selectCheckboxMenu>
+						</f:facet>	
+						<h:outputText value="#{enumHelper.getModalityLabel(element.modality)}" title="#{enumHelper.getModalityLabel(element.modality)}"/>
+					</p:column>
+					<p:column width="160"
+						headerText="#{msg.lbl_shift_course}"
+						sortBy="#{enumHelper.getShiftLabel(element.shift)}"
+						filterBy="#{enumHelper.getShiftLabel(element.shift)}"
+						filterMatchMode="in">
+						<f:facet name="filter">
+							<p:selectCheckboxMenu label="#{msg.lbl_shifts}" 
+									onchange="PF('coursesTable').filter()" 
+									styleClass="inputFilterSelectSmall" >
+			                    <f:selectItems value="#{enumHelper.shifts}" 
+	           						var="element" 
+	           						itemValue="#{element.label}" 
+	           						itemLabel="#{element.label}"/>
+			                </p:selectCheckboxMenu>
+						</f:facet>	
+						<h:outputText value="#{enumHelper.getShiftLabel(element.shift)}" title="#{enumHelper.getShiftLabel(element.shift)}"/>
+					</p:column>
+					
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{courseBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_course}" ajax="true"
+							actionListener="#{courseBean.loadCourse(element)}"
+							update=":formIncludeCourse"
+							oncomplete="PF('saveCourseDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{courseBean.canDelete}">
+						<p:commandLink title="#{msg.lbl_delete_course}" ajax="true"
+							actionListener="#{courseBean.delete(element)}"
+							update=":formListCourse">
+							<p:graphicImage value="/images/bt-deletar.png" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+	
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

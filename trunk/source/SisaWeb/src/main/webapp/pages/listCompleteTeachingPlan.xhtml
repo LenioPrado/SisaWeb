@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_teaching_plan_page}</title>
+	</h:head>
+
+	<h:body>
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		
+		<h:form id="formCompleteTeachingPlan" prependId="false">		
+			<p:outputPanel styleClass="form">
+				
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel value="#{msg.lbl_list_complete_teaching_plan}" styleClass="pageTitle alignTitle" />
+					
+					<p:outputPanel rendered="#{completeTeachingPlanBean.teachingPlanIsVisible}">
+						<ui:include src="../partial/exportTeachingPlanPanel.xhtml" />
+					</p:outputPanel>				
+					
+				</p:outputPanel>
+
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+				
+				<p:scrollPanel styleClass="scrollPanel" mode="native">
+				
+					<ui:include src="../partial/filterTeachingPlanPanel.xhtml" />
+					<p:outputPanel rendered="#{completeTeachingPlanBean.teachingPlanIsVisible}">
+						<ui:include src="../partial/completeTeachingPlanPanel.xhtml">
+							<ui:param name="baseBean" value="#{completeTeachingPlanBean}" />
+						</ui:include>
+					</p:outputPanel>					
+					
+				</p:scrollPanel>
+			</p:outputPanel>
+	
+		</h:form>
+	
+	</h:body>
+</html>

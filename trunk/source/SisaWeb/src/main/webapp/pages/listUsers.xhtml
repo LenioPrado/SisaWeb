@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_user_page}</title>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+	
+		<h:form id="formListUser" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_users}" />
+					
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="usersTable" fileName="#{msg.lbl_user}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>				
+						<h:commandLink title="#{msg.lbl_export_pdf}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="usersTable" fileName="#{msg.file_user}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+						ajax="true" value="#{msg.lbl_add_entity}"
+						rendered="#{userBean.canInsert}"
+						oncomplete="PF('saveUserDialog').show()"
+						update=":formIncludeUser"
+						actionListener="#{userBean.cleanUser}">
+						<p:ajax update=":formIncludeUser" resetValues="true" />  
+					</p:commandButton>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+	
+				<p:dataTable id="usersTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+					value="#{userBean.usersList}" paginator="true"
+					paginatorPosition="bottom" rows="10"
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="usersTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{userBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+	
+					<p:column width="420"
+							headerText="#{msg.lbl_name_user}"
+							sortBy="#{element.name}"
+							filterBy="#{element.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.name}" title="#{element.name}"/>
+					</p:column>
+					<p:column width="420"
+							headerText="#{msg.lbl_email_user}"
+							sortBy="#{element.email}"
+							filterBy="#{element.email}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.email}" title="#{element.email}"/>
+					</p:column>
+					<p:column styleClass="columnEditDelete" exportable="false"
+							  rendered="#{userBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_user}" ajax="true"
+							actionListener="#{userBean.loadUser(element)}"
+							update=":formIncludeUser"
+							oncomplete="PF('saveUserDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="columnEditDelete" exportable="false"
+							  rendered="#{userBean.canDelete}">
+						<p:commandLink title="#{msg.lbl_delete_user}" ajax="true"
+							actionListener="#{userBean.delete(element)}"
+							update=":formListUser">
+							<p:graphicImage value="/images/bt-deletar.png" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+	
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

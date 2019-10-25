@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveUserRoleDiag" widgetVar="saveUserRoleDialog" resizable="true" modal="true">
+			<h:form id="formIncludeUserRole" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_user_role}" rendered="#{userRoleBean.editUserRole}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_user_role}" rendered="#{!userRoleBean.editUserRole}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveUserRoleGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="user" value="#{msg.lbl_user_user_role}"/>
+							<p:selectOneMenu id="user"
+	                      			value="#{userRoleBean.userRole.user}"
+	                      			converter="userConverter"
+	                      			disabled="true"
+	                      			styleClass="inputSelect" >
+	           					<f:selectItems 
+	           						value="#{userBean.usersList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}"
+	           						required="true"
+					   				requiredMessage="#{msg.lbl_required_field}" />
+	       					</p:selectOneMenu>
+					        <p:message for="user" />				
+							
+							<p:outputLabel for="role" value="#{msg.lbl_role_user_role}"/>
+							<p:selectOneMenu id="role"
+	                      			value="#{userRoleBean.userRole.role}"
+	                      			converter="roleConverter"
+	                      			disabled="#{userRoleBean.editUserRole}"
+	                      			styleClass="inputSelect" >
+	           					<f:selectItems 
+	           						value="#{userRoleBean.rolesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}"
+	           						required="true"
+					   				requiredMessage="#{msg.lbl_required_field}" />
+	       					</p:selectOneMenu>
+					        <p:message for="role" />							
+							
+							<p:outputLabel for="startDate" value="#{msg.lbl_start_date_user_role}"/>
+							<p:calendar id="startDate" 
+										value="#{userRoleBean.userRole.startDate}"
+										pattern="dd/MM/yyyy"
+										mask = "true"
+										styleClass="inputs"										
+										showOn="button" 
+										locale="pt_BR"
+										readonlyInput="true"
+										required="true"
+										requiredMessage="#{msg.lbl_required_field}" >
+								<p:ajax event="dateSelect" update="endDate" />
+							</p:calendar>										
+							<p:message for="startDate" />
+							
+							<p:outputLabel for="endDate" value="#{msg.lbl_end_date_user_role}"/>
+							<p:calendar id="endDate" 
+										value="#{userRoleBean.userRole.endDate}"
+										pattern="dd/MM/yyyy"
+										mask = "true"
+										styleClass="inputs" 
+										showOn="button" 
+										locale="pt_BR" 
+										readonlyInput="true"
+										required="true"
+										requiredMessage="#{msg.lbl_required_field}"
+										mindate="#{userRoleBean.userRole.startDate}" >
+								<f:attribute name="startDate" value="#{userRoleBean.userRole.startDate}" />
+    							<f:validator validatorId="dateRangeValidator" />
+							</p:calendar>
+							<p:message for="endDate" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeUserRole.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{userRoleBean.save}"
+			    					update =":formIncludeUserRole:msgGeral, :formListUserRole, saveUserRoleGrid"
+			    					id="buttonSaveUserRole"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

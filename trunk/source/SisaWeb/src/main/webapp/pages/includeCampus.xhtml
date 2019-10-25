@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveCampusDiag" widgetVar="saveCampusDialog" resizable="true" modal="true">
+			<h:form id="formIncludeCampus" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel value="#{msg.lbl_include_campus}" styleClass="pageTitle"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveCampusGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="nameCampus" value="#{msg.lbl_name_campus}"/>
+							<p:inputText id="nameCampus" 
+								value="#{campusBean.campus.name}"  
+								styleClass="inputs"
+								style="width: 500px;white-space: normal"
+								maxlength="200"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="nameCampus" />
+							
+							<p:outputLabel for="cnpj" value="#{msg.lbl_cnpj_campus}"/>
+							<p:inputMask id="cnpj" 
+								value="#{campusBean.campus.cnpj}"
+								mask="99.999.999/9999-99"
+								styleClass="inputs"
+								style="width: 500px;white-space: normal"
+								maxlength="30"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}"/>	
+							<p:message for="cnpj" />
+							
+							<p:outputLabel for="rectory" value="#{msg.lbl_rectory_campus}"/>
+							<p:selectOneMenu id="rectory"
+									styleClass="inputSelect" 
+	                      			value="#{campusBean.campus.rectory}"
+	                      			converter="rectoryConverter" 
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}" >
+	           					<f:selectItems 
+	           						value="#{rectoryBean.rectoriesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}" />
+	       					</p:selectOneMenu>
+					        <p:message for="rectory" />						
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeCampus.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{campusBean.save}"
+			    					update =":formIncludeCampus:msgGeral, :formListCampus, saveCampusGrid"
+			    					id="buttonSaveCampus"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

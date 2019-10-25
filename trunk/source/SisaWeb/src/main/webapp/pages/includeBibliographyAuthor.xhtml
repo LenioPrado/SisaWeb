@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveBibliographyAuthorDialog" widgetVar="saveBibliographyAuthorDialog" resizable="true" modal="true">
+			<h:form id="formIncludeBibliographyAuthor" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_bibliography_author}" rendered="#{bibliographyAuthorBean.editBibliographyAuthor}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_bibliography_author}" rendered="#{!bibliographyAuthorBean.editBibliographyAuthor}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveBibliographyAuthorGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="author" value="#{msg.lbl_author_bibliography_author}"/>
+							<p:selectOneMenu id="author"
+	                      			value="#{bibliographyAuthorBean.author}"
+	                      			styleClass="inputSelect" 
+	                      			converter="authorConverter"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+					   			<p:ajax listener="#{bibliographyAuthorBean.authorChange()}" update="bibliography" />
+	           					<f:selectItems 
+	           						value="#{bibliographyAuthorBean.authorsList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.lastName} - #{element.otherNames}" />
+	       					</p:selectOneMenu>
+					       	<p:message for="author" />
+					       	
+					       	<p:outputLabel for="bibliography" value="#{msg.lbl_bibliography_bibliography_author}"/>
+					       	<p:selectCheckboxMenu id="bibliography" panelStyle="width:250px"
+					        		value="#{bibliographyAuthorBean.selectedBibliographies}" 
+					        		label="#{msg.lbl_bibliography_bibliography_author}" 
+					        		filter="true" filterMatchMode="startsWith"
+					        		converter="bibliographyConverter"
+					        		styleClass="inputSelect">
+            					<f:selectItems 
+	           						value="#{bibliographyBean.bibliographiesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.title}" />
+        					</p:selectCheckboxMenu>
+					        <p:message for="bibliography" />				        
+												        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeBibliographyAuthor.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{bibliographyAuthorBean.save}"
+			    					update =":formIncludeBibliographyAuthor:msgGeral, :formListBibliographyAuthor, saveBibliographyAuthorGrid"
+			    					id="buttonSaveBibliographyAuthor"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

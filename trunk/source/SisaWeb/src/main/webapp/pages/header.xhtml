@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">  
+    
+    <h:head>  
+      
+    </h:head>  
+      
+    <h:body>
+	    <h:form>
+	    	<div class="header-bg">
+		    	<div class="header">
+		    		<div class="logo">
+		    			<div class="img-logo"/>					    		    			
+		    			<p:outputPanel style="float:right;">
+
+							<h:outputLabel id="dynaButton" title="#{msg.lbl_menu_my_pages}">													
+						 		<p:graphicImage value="/images/home.png" />
+							</h:outputLabel>
+
+							<p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:100px">
+						        <p:menuitem value="#{msg.lbl_menu_my_teaching_plan}" url="home.xhtml" ajax="false" immediate="true" />
+						        <p:menuitem value="#{msg.lbl_menu_to_evaluate_teaching_plan}" url="teachingPlansToEvaluate.xhtml"  ajax="false" immediate="true"/>
+						    </p:tieredMenu>	
+						    
+							<h:commandLink ajax="true" title="#{msg.lbl_edit_user}"
+									update=":formIncludeUser" actionListener="#{userBean.loadUser}">
+								<p:ajax update=":formIncludeUser" resetValues="true" />						
+						 		<p:graphicImage value="/images/settings.png" />
+							</h:commandLink>
+
+							<h:commandLink ajax="true" title="#{msg.lbl_user_logout}"
+									update=":formIncludeUser" action="#{loginBean.logout}">
+								<p:ajax update=":formIncludeUser" resetValues="true" />						
+						 		<p:graphicImage value="/images/exit.png" />
+							</h:commandLink>
+								    						    						    				
+		    			</p:outputPanel>			
+		    		</div>	
+		    	</div>
+		    	
+	    	</div>
+		</h:form>
+    </h:body>  
+</html>  

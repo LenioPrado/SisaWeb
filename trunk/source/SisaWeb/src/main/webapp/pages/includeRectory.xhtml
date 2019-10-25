@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveRectoryDiag" widgetVar="saveRectoryDialog" resizable="true" modal="true">
+			<h:form id="formIncludeRectory" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_rectory}" rendered="#{rectoryBean.editRectory}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_rectory}" rendered="#{!rectoryBean.editRectory}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveRectoryGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="nameRectory" value="#{msg.lbl_name_rectory}"/>
+							<p:inputText id="nameRectory" 
+								value="#{rectoryBean.rectory.name}"  
+								styleClass="inputs"
+								maxlength="100"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="nameRectory" />
+							
+							<p:outputLabel for="cnpj" value="#{msg.lbl_cnpj_rectory}"/>
+							<p:inputMask id="cnpj" 
+								value="#{rectoryBean.rectory.cnpj}"  
+								styleClass="inputs"
+								maxlength="30"
+								mask="99.999.999/9999-99"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="cnpj" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeRectory.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{rectoryBean.save}"
+			    					update =":formIncludeRectory:msgGeral, :formListRectory, saveRectoryGrid"
+			    					id="buttonSaveRectory"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

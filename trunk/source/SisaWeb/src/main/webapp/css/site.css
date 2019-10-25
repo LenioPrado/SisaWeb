@@ -1,0 +1,326 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: Geneva, Tahoma, "Nimbus Sans L", sans-serif;
+	font-size: 12px;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body{
+	background-color: white;
+	color: #656565;
+	border-top: 4px solid #8CC63E;
+	min-width: 800px;
+}
+
+img{
+	border: none;
+}
+
+.pageTitle{
+	font-size: 240% !important;
+	font-weight: normal;
+	color: #111;
+	display: block;
+}
+
+.alignTitle{
+	float:left;
+}
+
+.wrapperPanel{
+	height: 36px;
+	width: 968px;
+}
+
+.btnAdd{
+	float: right;	
+}
+
+.pageSubTitle{
+	font-size: 170% !important;
+	margin-top: 10px;
+	font-weight: normal;
+	color: #111;
+}
+
+.header-bg{
+	background: #010101 url('../images/header_bg_big.jpg') repeat-x top;
+	height: 76px;
+}
+
+.header{
+	width: 960px;
+	height: 74px;
+	margin: 0px auto;
+	background: url('../images/bg-header.jpg') center top;
+}
+
+.logo{
+
+}
+
+.img-logo{
+	background: url('../images/logo.jpg');
+	width: 172px;
+	height: 72px;
+	margin-left: -4px;
+	float:left;
+}
+
+.img-mundo{
+	background: url('../images/mundo.png');
+	width: 72px;
+	height: 72px;
+	margin-left: -4px;
+	float:left;
+	background-size: 80px 60px;
+    background-repeat: no-repeat;
+}
+
+.menu{
+	height: 35px;
+	width: 70%;
+	display: block;
+	margin: 10px auto;	
+}
+
+.panelMenu{
+	align-items: center;
+}
+
+.menu .subMenu{
+	margin-right: 10px;
+}
+
+.menu .menu-container{
+
+	margin: -2px auto;
+	border-radius: 4px;
+	border: none;
+	font-weight: normal;
+}
+
+.menu-container .ui-widget{
+	width: 110px;
+	left: 25px;
+}
+
+.ui-menu-list{
+	margin-top: 2px;
+}
+
+.ui-menu-list .ui-icon{
+	display: none;
+}
+
+.menuGear{
+	float: right !important;
+	margin-right: -45px !important;
+	margin-top: -1px !important;
+}
+
+.iconGear{
+	display: block !important;
+	width: 23px !important;  
+	height: 23px !important;
+	background: url('../images/ic-settings.png') no-repeat !important;
+}
+
+.top-main-page{
+	background: url('../images/border_top_mainpage.png') repeat-x 0 top;
+	height: 12px;
+}
+
+.footer{
+	background: #8CC63E url('../images/bottom_bg_shadow.png') repeat-x top;
+	height: 30px;
+	width:100%;
+	position: absolute !important;
+	bottom: 0%;
+	min-width: 1024px;
+	display: block !important;
+}
+
+.text-footer{
+	width: 962px;
+	font-size: 11px;
+	color: #fafbfb;
+	text-align: right;
+	margin: auto;
+	padding-top: 8px;
+}
+
+.form{
+	width: 968px;
+	margin: 5px auto;
+	display: block;
+}
+
+.panels{
+	margin-top: 10px;
+}
+
+.inputs{
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.inputName, .inputEmail{
+	width: 450px;
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.inputSelect{
+	width: 300px !important;
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.inputTextArea{
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.inputFilterSelect {
+	width: 300px !important;
+}
+
+.inputFilterSelectSmall {
+	width: 160px !important;
+}
+
+.inputFilterText input {
+	width: 250px !important;
+}
+
+.wordsCounter{
+	margin-left: 5px;
+}
+
+.labels{
+	font-weight: bold;
+	padding-top: 10px;
+}
+
+.inputs{
+	width: 200px;
+}
+
+.ui-datepicker-trigger{
+	height: 27px;
+}
+
+.columnEditDelete{
+	width: 20px;
+}
+
+.ui-spinner .ui-spinner-input{
+	width: 37px;
+	height: 20px;
+	margin-left: 15px;
+}
+
+.separator{
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.requiredFields{
+	font-style: italic;
+	font-size: 11px;
+	color: #FF0000;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+.btnSave{
+	margin-top: 20px;
+	float: right;
+	margin-right: -1px;
+}
+
+.btnCancel{
+	margin-right: 10px;
+}
+
+.labels .ui-state-error{
+	background: none !important;
+	border: none !important;
+	color: #656565 !important;
+}
+
+#javax_faces_developmentstage_messages{
+	display: none;
+}
+
+.ui-selectonemenu-trigger{
+	height: 21px !important;
+}
+
+.export{
+	float: right;
+}
+
+.tableList {
+
+}
+
+.hide-column-names table thead tr {
+    display: none;
+}
+
+.ui-datatable.borderless thead th,
+.ui-datatable.borderless tbody,
+.ui-datatable.borderless tbody tr,
+.ui-datatable.borderless tbody td {
+    border-width: 0px;
+}
+
+.fixedHeightPanel {
+	height: 27px;
+	clear:both;
+}
+
+input.hasDatepicker{
+	margin-top: 10px !important;
+	margin-left: 0px !important;
+	margin-right: 5px !important;
+	width: 152px !important;
+	
+}
+
+.scrollPanel {
+	height:350px;
+	width:100%;
+	border: none !important;
+}
+
+.completeTeachingPlanPanelGrid {
+	width:100%;
+}
+
+.contextMenuHelp {
+	float: left;
+	width: 100%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.statusImage {
+	margin-left: 17px;
+}
+
+.ui-icon-back{
+    background-image: url('../images/back.png') !important;
+}
+
+/* Evitar que textos grandes aumentem a linha da tabela */
+div.tableList tr, 
+div.tableList td { white-space: nowrap; overflow: hidden; };

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveCourseDiag" widgetVar="saveCourseDialog" resizable="true" modal="true">
+			<h:form id="formIncludeCourse" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_course}" rendered="#{courseBean.editCourse}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_course}" rendered="#{!courseBean.editCourse}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveCourseGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="nameCourse" value="#{msg.lbl_name_course}"/>
+							<p:inputText id="nameCourse" 
+								value="#{courseBean.course.name}"  
+								styleClass="inputs"
+								maxlength="50"
+								required="true" 
+					   	    	requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="nameCourse" />
+							
+							<p:outputLabel for="shortName" value="#{msg.lbl_short_name_course}"/>
+							<p:inputText id="shortName" 
+								value="#{courseBean.course.shortName}"  
+								styleClass="inputs"
+								maxlength="30"
+								required="true" 
+					   	    	requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="shortName" />							
+							
+							<p:outputLabel for="modality" value="#{msg.lbl_modality_course}"/>
+							<p:selectOneMenu id="modality" 
+									value="#{courseBean.course.modality}"  
+									styleClass="inputSelect" 
+									required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+								<f:selectItems 
+	           						value="#{enumHelper.modalities}" 
+	           						var="element" 
+	           						itemValue="#{element.index}" 
+	           						itemLabel="#{element.label}"/>
+					        </p:selectOneMenu>    			
+							<p:message for="modality" />
+							
+							<p:outputLabel for="shift" value="#{msg.lbl_shift_course}"/>
+							<p:selectOneMenu id="shift" 
+									value="#{courseBean.course.shift}"  
+									styleClass="inputSelect" 
+									required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+								<f:selectItems 
+	           						value="#{enumHelper.shifts}" 
+	           						var="element" 
+	           						itemValue="#{element.index}" 
+	           						itemLabel="#{element.label}"/>								
+					        </p:selectOneMenu>							
+							<p:message for="shift" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeCourse.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{courseBean.save}"
+			    					update =":formIncludeCourse:msgGeral, :formListCourse, saveCourseGrid"
+			    					id="buttonSaveCourse"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

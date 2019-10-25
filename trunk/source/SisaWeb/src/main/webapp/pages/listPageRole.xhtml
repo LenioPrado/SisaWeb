@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_page_role_page}</title>
+		<script type="text/javascript" src="#{request.contextPath}/js/expander.js"></script>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+	
+		<h:form id="formListPageRole" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />
+	
+				<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_list_page_role}" />
+	
+				<p:outputPanel styleClass="export">
+					<h:commandLink title="#{msg.lbl_export_excel}">
+						<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+						<p:dataExporter type="csv" target="pageActionsTable" fileName="#{msg.file_page_role}" pageOnly="false" encoding="UTF-8"/>
+					</h:commandLink>
+					<h:commandLink title="#{msg.lbl_export_pdf}">
+						<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+						<p:dataExporter type="pdf" target="pageActionsTable" fileName="#{msg.file_page_role}" pageOnly="false" encoding="iso-8859-1"/>
+					</h:commandLink>
+				</p:outputPanel>						
+				
+				<p:outputPanel id="panelButtons" styleClass="export">
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"						
+						value="#{msg.lbl_enable_edition}"						
+						rendered="#{pageRoleBean.canEdit and !pageRoleBean.editPageRole}"
+						update="panelButtons pageActionsTable"
+						actionListener="#{pageRoleBean.enablePageRoleEdition}">  
+					</p:commandButton>
+					
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"						
+						value="#{msg.lbl_disable_edition}"						
+						rendered="#{pageRoleBean.editPageRole}"
+						update="panelButtons pageActionsTable"
+						actionListener="#{pageRoleBean.disablePageRoleEdition}">
+					</p:commandButton>
+					
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick" 
+							ajax="true"
+							value="#{msg.lbl_save_edition}"
+							rendered="#{pageRoleBean.editPageRole}"
+							update="panelButtons, :formMenu"
+							actionListener="#{pageRoleBean.save}">
+					</p:commandButton>
+				</p:outputPanel>
+				
+				<h:panelGrid columns="2" style="margin-top: 8px;">
+					<p:outputLabel for="role" value="#{msg.lbl_role_user_role}"/>					
+					<p:selectOneMenu id="role"
+						value="#{pageRoleBean.role}"
+						style="width: 300px !important;" 
+	        			converter="roleConverter"	        			
+	        			required="true"
+						requiredMessage="#{msg.lbl_required_field}">
+						<f:selectItems 
+							value="#{pageRoleBean.roles}" 
+							var="element" 
+							itemValue="#{element}" 
+							itemLabel="#{element.name} - #{element.observation}"/>
+						<p:ajax listener="#{pageRoleBean.roleChanged}" update="pageActionsTable, msgGeral"/>
+					</p:selectOneMenu>	
+				</h:panelGrid>	
+				
+				<p:dataTable id="pageActionsTable" var="element" styleClass="tableList" rowIndexVar="rowIndex"
+					value="#{pageRoleBean.pages}" paginator="true"
+					paginatorPosition="bottom" rows="10"
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="pageActionsTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{pageRoleBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+										
+					<p:column width="300"
+							headerText="#{msg.lbl_page_page_role}"
+							sortBy="#{element.name}"
+							filterBy="#{element.name}"
+							filterMatchMode="contains">
+		            	<h:outputText value="#{element.name}" title="#{element.name}"/>						
+		            </p:column>
+					<p:columns width="150" value="#{pageRoleBean.actionColumns}" var="column" columnIndexVar="colIndex" >
+			            <f:facet name="header">
+			                <h:outputText value="#{column.header}" />
+			            </f:facet>
+			            <h:selectBooleanCheckbox disabled="#{!pageRoleBean.editPageRole}" value="#{element.actions[colIndex][msg.page_role_action_action_field_name]}" />
+			        </p:columns>		
+
+				</p:dataTable>					
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

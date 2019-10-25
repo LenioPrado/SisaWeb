@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    
+	<h:head>		
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_responsible_page}</title>
+		<script type="text/javascript" src="#{request.contextPath}/js/expander.js"></script>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeResponsible.xhtml" />
+	
+		<h:form id="formListResponsible" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_responsible}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="responsiblesTable" fileName="#{msg.file_responsible}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="responsiblesTable" fileName="#{msg.file_responsible}" pageOnly="false"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:outputPanel styleClass="emptyPanel">
+					</p:outputPanel>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+				
+				<p:dataTable id="responsiblesTable" var="element" styleClass="tableList scrollTableFixedHeight"
+					value="#{responsibleBean.usersRolesList}" paginator="true" rowIndexVar="rowIndex"
+					paginatorPosition="bottom" rows="10"				
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="responsibleTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{responsibleBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+					
+					<p:ajax event="rowToggle" onstart="closeOpennedExpander();"/>  
+		        
+					<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>			        
+        
+		            <p:column headerText="#{msg.lbl_role_user_role}"
+		            		sortBy="#{element.role.name}"
+		            		filterBy="#{element.role.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+		            	<h:outputText value="#{element.role.name}" title="#{element.role.name}"/>
+		            </p:column>
+		            
+					<p:column headerText="#{msg.lbl_user_user_role}"
+							sortBy="#{element.user.name}"
+							filterBy="#{element.user.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.user.name}" title="#{element.user.name}"/>
+					</p:column>		            
+
+					<p:column styleClass="columnEditDelete" exportable="false"
+							  rendered="#{responsibleBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_ppc_discipline}" ajax="true"
+							actionListener="#{responsibleBean.loadResponsible(element)}"
+							update=":formIncludeResponsible"
+							oncomplete="PF('saveResponsibleDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>					
+					
+					<p:rowExpansion style="padding:0px;">
+			            <f:facet name="header">
+							<h:outputText value="#{msg.lbl_user_responsible}" />
+						</f:facet>
+
+				        <p:dataTable styleClass="tableList"
+				            value="#{element.teachingPlans}"
+				            var="subelement"
+				            filteredValue="#{responsibleBean.subFiltered}"
+				            emptyMessage="#{msg.lbl_no_records_found}">
+				            
+							<p:column headerText="#{msg.lbl_academic_period_teaching_plan}"
+									sortBy="#{subelement.academicPeriod.semester}/#{subelement.academicPeriod.year}"
+									filterBy="#{subelement.academicPeriod.semester}/#{subelement.academicPeriod.year}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.academicPeriod.semester}/#{subelement.academicPeriod.year}" title="#{subelement.academicPeriod.semester}/#{subelement.academicPeriod.year}"/>
+							</p:column>	
+							<p:column headerText="#{msg.lbl_ppc_teaching_plan}"
+									sortBy="#{subelement.ppcDiscipline.ppc.course.name}"
+									filterBy="#{subelement.ppcDiscipline.ppc.course.name}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.ppcDiscipline.ppc.course.name}" title="#{subelement.ppcDiscipline.ppc.course.name}"/>
+							</p:column>
+							<p:column headerText="#{msg.lbl_discipline_teaching_plan}"
+									sortBy="#{subelement.ppcDiscipline.discipline.name}"
+									filterBy="#{subelement.ppcDiscipline.discipline.name}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.ppcDiscipline.discipline.name}" title="#{subelement.ppcDiscipline.discipline.name}"/>
+							</p:column>	
+							<p:column headerText="#{msg.lbl_teacher_teaching_plan}"
+									sortBy="#{subelement.teacher.name}"
+									filterBy="#{subelement.teacher.name}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.teacher.name}" title="#{subelement.teacher.name}"/>
+							</p:column>	
+				            
+							<p:column styleClass="columnEditDelete" exportable="false"
+									  rendered="#{responsibleBean.canDelete}">
+								<p:commandLink title="#{msg.lbl_delete_ppc_discipline}" ajax="true"
+									actionListener="#{responsibleBean.delete(element, subelement)}"
+									update=":formListResponsible">
+									<p:graphicImage value="/images/bt-deletar.png" />
+								</p:commandLink>
+							</p:column>					            
+				            
+				        </p:dataTable>
+			        </p:rowExpansion>		
+
+				</p:dataTable>					
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

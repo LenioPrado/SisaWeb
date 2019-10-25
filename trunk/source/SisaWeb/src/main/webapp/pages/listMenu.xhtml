@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_menu_page}</title>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeMenu.xhtml" />
+		
+		<ui:define name="metadata">
+		    <f:metadata>
+		    	<f:viewParam name="dummy"/>
+		        <f:event type="preRenderView" listener="#{menuBean.createTreeList}"/>
+		    </f:metadata>
+		</ui:define>
+	
+		<h:form id="formListMenu" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_menu}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="menusTable" fileName="#{msg.file_menu}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="menusTable" fileName="#{msg.file_menu}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+		
+					<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+						ajax="true" value="#{msg.lbl_add_entity}"
+						rendered="#{menuBean.canInsert}"
+						oncomplete="PF('saveMenuDialog').show()"
+						update=":formIncludeMenu"
+						actionListener="#{menuBean.cleanMenu}">
+						<p:ajax update=":formIncludeMenu" resetValues="true" />  
+					</p:commandButton>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+				
+				<p:outputPanel styleClass="contextMenuHelp" rendered="#{menuBean.canDelete}">
+					<p:outputLabel value="#{msg.lbl_context_menu_help}"/>
+				</p:outputPanel>
+				
+				<p:scrollPanel styleClass="scrollPanel" mode="native">
+					<p:tree id="menuTree" value="#{menuBean.tree}" var="node" dynamic="true" 
+							selectionMode="single"
+							selection="#{menuBean.selectedNode}"
+							draggable="true" droppable="true">
+						
+						<p:ajax event="dragdrop" listener="#{menuBean.onDragDrop}" 
+							update="menuTree, :formListMenu :formMenu "
+							resetValues="true"/>
+						
+						<p:treeNode type="#{msg.menu_type_parent}" expandedIcon="ui-icon ui-icon-folder-open"
+				                    collapsedIcon="ui-icon ui-icon-folder-collapsed">
+				            <h:outputText value="#{node.description}"/>
+				        </p:treeNode>
+				        <p:treeNode type="#{msg.menu_type_document}" icon="ui-icon-document">
+				            <h:outputText value="#{node.description}"/>
+				        </p:treeNode>
+				    </p:tree>
+				    
+				    <p:contextMenu for="menuTree"
+				   				   rendered="#{menuBean.canDelete}">
+				        <p:menuitem value="#{msg.lbl_delete_tree_menu}" 
+				        			update="menuTree, :formListMenu :formMenu"  
+				        			icon="ui-icon-close"
+				        			actionListener="#{menuBean.delete}" />
+				    </p:contextMenu>
+			    </p:scrollPanel>
+					
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

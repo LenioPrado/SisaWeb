@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveDisciplineDiag" widgetVar="saveDisciplineDialog" resizable="true" modal="true">
+			<h:form id="formIncludeDiscipline" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">	
+					
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_discipline}" rendered="#{disciplineBean.editDiscipline}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_discipline}" rendered="#{!disciplineBean.editDiscipline}"/>
+    				<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />
+    								   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveDisciplineGrid" columns="4" columnClasses="labels">		
+							
+							<p:outputLabel for="nameDiscipline" value="#{msg.lbl_name_discipline}"/>
+							<p:inputText id="nameDiscipline" 
+								value="#{disciplineBean.discipline.name}"  
+								styleClass="inputs"
+								maxlength="100"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="nameDiscipline" />
+							<p:outputLabel/>
+														
+							<p:outputLabel for="periodSeries" value="#{msg.lbl_period_series_discipline}"/>
+							<p:inputMask id="periodSeries" 
+									value="#{disciplineBean.discipline.periodSeries}"  
+									styleClass="inputs"
+									maxlength="50"
+									mask="9?99"
+									placeHolder=""
+									required="true"
+						   			requiredMessage="#{msg.lbl_required_field}" >
+						   		<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="periodSeries" />
+							<p:outputLabel/>
+							
+							<p:outputLabel for="type" value="#{msg.lbl_type_discipline}"/>
+							<p:inputText id="type" 
+								value="#{disciplineBean.discipline.type}"  
+								styleClass="inputs"
+								maxlength="30"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="type" />
+							<p:outputLabel/>
+
+							<p:outputLabel for="weekClasses" value="#{msg.lbl_week_classes_discipline}"/>
+							<p:inputMask id="weekClasses" 
+									value="#{disciplineBean.discipline.weekClasses}"  
+									styleClass="inputs"
+									maxlength="50"
+									mask="?999"
+									placeHolder=""
+									required="true"
+						   			requiredMessage="#{msg.lbl_required_field}" >
+						   		<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="weekClasses" />
+							<p:outputLabel/>
+							
+							<p:outputLabel for="menu" value="#{msg.lbl_menu_discipline}"/>
+							<p:inputTextarea id="menu" rows="5" cols="80" counter="display" 
+								styleClass="inputTextArea" 
+								maxlength="2000" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								value="#{disciplineBean.discipline.menu}" 
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<h:outputText id="display" styleClass="wordsCounter" />
+							<p:message for="menu" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeDiscipline.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{disciplineBean.save}"
+			    					update =":formIncludeDiscipline:msgGeral, :formListDiscipline, saveDisciplineGrid"
+			    					id="buttonSaveDiscipline"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

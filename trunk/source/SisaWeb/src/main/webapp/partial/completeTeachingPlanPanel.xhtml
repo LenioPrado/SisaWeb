@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">  
+
+	<p:outputPanel id="completeTeachingPlan">
+		<p:panelGrid styleClass="completeTeachingPlanPanelGrid"					 
+					 update="completeTeachingPlan">
+		    <f:facet name="header">
+		        <p:row>
+		            <p:column colspan="7">#{msg.lbl_identification_teaching_plan}</p:column>
+		        </p:row>
+		    </f:facet>
+		    
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_course_teaching_plan}</p:column>
+		        <p:column colspan="3">#{baseBean.completeTeachingPlan.ppcDiscipline.ppc.course.name}</p:column>
+		 
+		        <p:column style="font-weight: bold;">#{msg.lbl_modality_teaching_plan}</p:column>
+		        <p:column>#{enumHelper.getModalityLabel(baseBean.completeTeachingPlan.ppcDiscipline.ppc.course.modality)}</p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_period_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.ppcDiscipline.discipline.periodSeries}</p:column>
+		 
+		        <p:column style="font-weight: bold;">#{msg.lbl_year_semester_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.academicPeriod.semester}/#{baseBean.completeTeachingPlan.academicPeriod.year}</p:column>
+		        
+		        <p:column style="font-weight: bold;">#{msg.lbl_shift_teaching_plan}</p:column>
+		        <p:column>#{enumHelper.getShiftLabel(baseBean.completeTeachingPlan.ppcDiscipline.ppc.course.shift)}</p:column>					        
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_curricular_component_teaching_plan}</p:column>
+		        <p:column colspan="5">#{baseBean.completeTeachingPlan.ppcDiscipline.discipline.name}</p:column>					        
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_class_number_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.ppcDiscipline.classNumber}</p:column>
+		 
+		        <p:column style="font-weight: bold;">#{msg.lbl_complete_hour_load_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.totalLoadTimeHours}</p:column>
+		        
+		        <p:column style="font-weight: bold;">#{msg.lbl_hour_class_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.ppcDiscipline.ppc.classHour} #{msg.lbl_minutes_teaching_plan}</p:column>					        
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_theoretical_class_number_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.theoreticalLoadTimeHoursClass}</p:column>
+		 
+		        <p:column style="font-weight: bold;">#{msg.lbl_theoretical_hour_load_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.theoreticalLoadTimeHours}</p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_practice_class_number_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.practiceLoadTimeHoursClass}</p:column>
+		 
+		        <p:column style="font-weight: bold;">#{msg.lbl_practice_hour_load_teaching_plan}</p:column>
+		        <p:column>#{baseBean.completeTeachingPlan.practiceLoadTimeHours}</p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column style="font-weight: bold;">#{msg.lbl_teacher_teaching_plan}</p:column>
+		        <p:column colspan="5">#{baseBean.completeTeachingPlan.teacher.name}</p:column>
+	        </p:row>
+
+		    <p:row>
+		        <p:column colspan="6" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_menu_teaching_plan}
+		        </p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="6">#{baseBean.completeTeachingPlan.ppcDiscipline.discipline.menu}</p:column>
+		    </p:row>
+		    
+		    <p:row>
+		        <p:column colspan="5" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_objectives_teaching_plan}
+		        </p:column>
+		        <p:column styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            <p:commandLink rendered="#{baseBean.action eq 'fill'}"
+		            	title="#{msg.lbl_edit_teaching_plan}" ajax="true"
+						actionListener="#{teachingPlanBean.fillTeachingPlan(baseBean.completeTeachingPlan)}"
+						update="completeTeachingPlan, :formIncludeTeachingPlan"
+						oncomplete="PF('saveTeachingPlanDialog').show()">
+						<p:graphicImage value="/images/bt-editar.png" />
+					</p:commandLink>
+		        </p:column>					        
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="6">#{baseBean.completeTeachingPlan.objective}</p:column>
+		    </p:row>
+		    
+		    <p:row>
+		        <p:column colspan="5" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_program_content_teaching_plan}
+		        </p:column>
+				<p:column styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            <p:commandLink rendered="#{baseBean.action eq 'fill'}"
+		            	title="#{msg.lbl_edit_classes_programming}" ajax="true"
+						action="#{fillTeachingPlanBean.editClassesProgramming(baseBean.completeTeachingPlan)}">
+						<p:graphicImage value="/images/goto.png" />
+					</p:commandLink>
+		        </p:column>	
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="5" style="font-weight: bold;">#{msg.lbl_developed_content_teaching_plan}</p:column>
+		        <p:column colspan="1" style="font-weight: bold;">#{msg.lbl_expected_class_number_teaching_plan}</p:column>
+		    </p:row>
+		    
+		    <c:forEach items="#{baseBean.completeTeachingPlan.classesProgramming}" var="item">
+			    <p:row>
+			        <p:column colspan="5">#{item.content}</p:column>
+			        <p:column colspan="1">#{item.classesQuantity}</p:column>			        
+			    </p:row>
+		    </c:forEach>
+		    
+		    <p:row>
+		        <p:column colspan="6" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_teaching_procedure_teaching_plan}
+		        </p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="6">#{baseBean.completeTeachingPlan.teachingProcedure}</p:column>					 					        
+		    </p:row>
+
+		    <p:row>
+		        <p:column colspan="5" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_procedure_evaluation_teaching_plan}
+		        </p:column>
+		       	<p:column styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            <p:commandLink rendered="#{baseBean.action eq 'fill'}"
+		            	title="#{msg.lbl_edit_classes_programming}" ajax="true"
+						action="#{fillTeachingPlanBean.editProceduresEvaluation(baseBean.completeTeachingPlan)}">
+						<p:graphicImage value="/images/goto.png" />
+					</p:commandLink>
+		        </p:column>	
+		    </p:row>
+		    
+		   	<p:row>
+		        <p:column colspan="5" style="font-weight: bold;">#{msg.lbl_procedure_evaluation_observation_teaching_plan}</p:column>
+		        <p:column colspan="1" style="font-weight: bold;">#{msg.lbl_procedure_evaluation_date_teaching_plan}</p:column>
+		    </p:row>
+
+		    <c:forEach items="#{baseBean.completeTeachingPlan.proceduresEvaluations}" var="item">
+			    <p:row>
+			        <p:column colspan="5">#{item.observation}</p:column>
+			        <p:column colspan="1">#{item.dateLabel}</p:column>
+			    </p:row>
+		    </c:forEach>
+
+		    <p:row>
+		        <p:column colspan="5" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_recuperation_actitivity_teaching_plan}
+		        </p:column>
+		        <p:column styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            <p:commandLink rendered="#{baseBean.action eq 'fill'}"
+		            	title="#{msg.lbl_edit_teaching_plan}" ajax="true"
+						actionListener="#{teachingPlanBean.fillTeachingPlan(baseBean.completeTeachingPlan)}"
+						update="completeTeachingPlan, :formIncludeTeachingPlan"
+						oncomplete="PF('saveTeachingPlanDialog').show()">
+						<p:graphicImage value="/images/bt-editar.png" />
+					</p:commandLink>
+		        </p:column>						        
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="6">#{baseBean.completeTeachingPlan.recovery}</p:column>					 					        
+		    </p:row>
+		    
+		    <p:row>
+		        <p:column colspan="6" style="text-align: center;" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_references_teaching_plan}
+		        </p:column>
+		    </p:row>
+		    <p:row>
+		        <p:column colspan="6" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_basic_reference_teaching_plan}
+		        </p:column>
+		    </p:row>
+		   
+			<c:forEach items="#{baseBean.completeTeachingPlan.ppcDiscipline.discipline.basicBibliographies}" var="item">
+			    <p:row>
+			        <p:column colspan="6">#{item.formattedText}</p:column>
+			    </p:row>
+		    </c:forEach>
+
+		    <p:row>
+		        <p:column colspan="6" styleClass="ui-widget-header">
+		            <p:spacer height="0"/>
+		            #{msg.lbl_complementary_reference_teaching_plan}
+		        </p:column>
+		    </p:row>
+		    
+			<c:forEach items="#{baseBean.completeTeachingPlan.ppcDiscipline.discipline.complementaryBibliographies}" var="item">
+			    <p:row>
+			        <p:column colspan="6">#{item.formattedText}</p:column>
+			    </p:row>
+		    </c:forEach>
+		</p:panelGrid>
+	</p:outputPanel>
+
+</html>  

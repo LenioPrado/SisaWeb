@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveBibliographyDiag" widgetVar="saveBibliographyDialog" resizable="true" modal="true">
+			<h:form id="formIncludeBibliography" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_bibliography}" rendered="#{bibliographyBean.editBibliography}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_bibliography}" rendered="#{!bibliographyBean.editBibliography}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveBibliographyGrid" columns="6" columnClasses="labels">		
+							
+							<p:outputLabel for="bibliographyType" value="#{msg.lbl_bibliography_type}"/>
+							<p:selectOneMenu id="bibliographyType" 
+									value="#{bibliographyBean.bibliography.bibliographyType}"  
+									styleClass="inputSelect" 
+									required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+								<f:selectItems 
+	           						value="#{enumHelper.bibliographyTypes}" 
+	           						var="element" 
+	           						itemValue="#{element.index}" 
+	           						itemLabel="#{element.label}"/>
+					        </p:selectOneMenu>    			
+							<p:message for="bibliographyType"/>
+							<h:outputLabel/>
+							<h:outputLabel/>
+							<h:outputLabel/>
+							
+							<p:outputLabel for="title" value="#{msg.lbl_title_bibliography}"/>							
+							<p:inputTextarea id="title" rows="5" cols="50" counter="displayTitle" 
+								styleClass="inputTextArea" 
+								maxlength="300" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								value="#{bibliographyBean.bibliography.title}" 
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<h:outputText id="displayTitle" styleClass="wordsCounter" />
+							<p:message for="title"/>
+							<h:outputLabel/>
+							<h:outputLabel/>
+							
+							<p:outputLabel for="subtitle" value="#{msg.lbl_subtitle_bibliography}"/>
+							<p:inputTextarea id="subtitle" rows="3" cols="50" counter="displaySubtitle" 
+								styleClass="inputTextArea" 
+								maxlength="150" autoResize="false"
+								counterTemplate="{0} #{msg.lbl_remaining_characters}" 
+								value="#{bibliographyBean.bibliography.subtitle}" />
+							<h:outputText id="displaySubtitle" styleClass="wordsCounter" />
+							<p:message for="subtitle"/>
+							<h:outputLabel/>
+							<h:outputLabel/>
+							
+							<p:outputLabel for="edition" value="#{msg.lbl_edition_bibliography}"/>
+							<p:inputMask id="edition" 
+								value="#{bibliographyBean.bibliography.edition}"  
+								styleClass="inputs"
+								maxlength="3"
+								mask="9?99"
+								placeHolder=""
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" >
+					   			<f:validateLongRange maximum="999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="edition" />
+
+							<p:outputLabel for="cityPlace" styleClass="labels" value="#{msg.lbl_city_place_bibliography}"/>							
+							<p:inputText id="cityPlace" 
+								value="#{bibliographyBean.bibliography.cityPlace}"  
+								styleClass="inputs"
+								maxlength="60" />
+							<p:message for="cityPlace" />							
+														
+							
+							<p:outputLabel for="publisher" value="#{msg.lbl_publisher_bibliography}"/>
+							<p:inputText id="publisher" 
+								value="#{bibliographyBean.bibliography.publisher}"  
+								styleClass="inputs"
+								maxlength="60"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="publisher" />
+							
+							<p:outputLabel for="year" styleClass="labels" value="#{msg.lbl_year_bibliography}"/>
+							<p:inputMask id="year" 
+								value="#{bibliographyBean.bibliography.year}"  
+								styleClass="inputs"
+								maxlength="4"
+								mask= "9?999"
+								placeHolder=""
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" >
+					   			<f:validateLongRange maximum="9999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="year" />
+										
+							
+							<p:outputLabel for="pages" value="#{msg.lbl_pages_bibliography}"/>
+							<p:inputMask id="pages" 
+								value="#{bibliographyBean.bibliography.pages}"  
+								styleClass="inputs"
+								placeHolder=""
+								maxlength="4"
+								mask="9?999">
+					   			<f:validateLongRange maximum="9999" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="pages" />												
+							
+							<p:outputLabel for="volume" styleClass="labels" value="#{msg.lbl_volume_bibliography}"/>
+							<p:inputMask id="volume" 
+								value="#{bibliographyBean.bibliography.volume}" 
+								styleClass="inputs"
+								placeHolder=""
+								maxlength="2"
+								mask= "9?9" >
+					   			<f:validateLongRange maximum="99" minimum="1" />
+				   			</p:inputMask>
+							<p:message for="volume" />
+							
+							
+							<p:outputLabel for="series" value="#{msg.lbl_series_bibliography}"/>
+							<p:inputText id="series" 
+								value="#{bibliographyBean.bibliography.series}"  
+								styleClass="inputs"
+								maxlength="100" />
+							<p:message for="series" />
+
+							<p:outputLabel for="isbn" styleClass="labels" value="#{msg.lbl_isbn_bibliography}"/>
+							<p:inputText id="isbn" 
+								value="#{bibliographyBean.bibliography.isbn}"  
+								styleClass="inputs"
+								maxlength="100"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="isbn" />
+							
+						</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeBibliography.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{bibliographyBean.save}"
+			    					update =":formIncludeBibliography:msgGeral, :formListBibliography, saveBibliographyGrid"
+			    					id="buttonSaveBibliography"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

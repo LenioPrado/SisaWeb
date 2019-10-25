@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+ 	<h:body>	
+		<p:dialog id="submitTeachingPlanDiag" widgetVar="submitTeachingPlanDialog" resizable="true" modal="true">
+			<h:form id="formSubmitTeachingPlan" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_submit_teaching_plan_to_evaluation}"/>
+					<p:messages id="msgSubmit" for="msgSubmit" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="submitTeachingPlanGrid" columns="3" columnClasses="labels">		
+					        
+					        <p:outputLabel for="responsibles" value="#{msg.lbl_responsibles_submit_teaching_plan}"/>
+					        <p:selectCheckboxMenu id="responsibles" panelStyle="width:250px"
+					        		styleClass="inputSelect"
+					        		value="#{fillTeachingPlanBean.selectedResponsibles}" 
+					        		label="#{msg.lbl_responsibles_to_evaluate_submit_teaching_plan}" 
+					        		filter="true" filterMatchMode="startsWith"
+					        		converter="responsibleConverter">
+            					<f:selectItems 
+	           						value="#{fillTeachingPlanBean.responsiblesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.userRole.user.name}" />
+        					</p:selectCheckboxMenu>
+					        <p:message for="responsibles" />						
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formSubmitTeachingPlan.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{fillTeachingPlanBean.submitTeachingPlan}"
+			    					update =":formSubmitTeachingPlan:msgSubmit, :formCompleteTeachingPlan, submitTeachingPlanGrid"
+			    					id="buttonSubmitTeachingPlan"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

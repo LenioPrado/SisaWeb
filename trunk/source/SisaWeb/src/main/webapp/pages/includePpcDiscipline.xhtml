@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="savePpcDisciplineDiag" widgetVar="savePpcDisciplineDialog" resizable="true" modal="true">
+			<h:form id="formIncludePpcDiscipline" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_ppc_discipline}" rendered="#{ppcDisciplineBean.editPpcDiscipline}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_ppc_discipline}" rendered="#{!ppcDisciplineBean.editPpcDiscipline}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="savePpcDisciplineGrid" columns="3" columnClasses="labels">		
+
+					        <p:outputLabel for="ppc" value="#{msg.lbl_ppc_ppc_discipline}"/>
+							<p:selectOneMenu id="ppc"
+	                      			value="#{ppcDisciplineBean.ppc}"
+	                      			converter="ppcConverter"
+	                      			styleClass="inputSelect"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+					   			<p:ajax listener="#{ppcDisciplineBean.ppcChange()}" update="discipline" />
+	           					<f:selectItems 
+	           						value="#{ppcDisciplineBean.ppcs}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.course.name}" />
+	       					</p:selectOneMenu>
+					        <p:message for="ppc" />
+					        
+					        <p:outputLabel for="discipline" value="#{msg.lbl_discipline_ppc_discipline}"/>
+					        <p:selectCheckboxMenu id="discipline" panelStyle="width:250px"
+					        		styleClass="inputSelect"
+					        		value="#{ppcDisciplineBean.selectedDisciplines}" 
+					        		label="#{msg.lbl_discipline_ppc_discipline}" 
+					        		filter="true" filterMatchMode="startsWith"
+					        		converter="disciplineConverter">
+            					<f:selectItems 
+	           						value="#{disciplineBean.disciplinesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}" />
+        					</p:selectCheckboxMenu>
+					        <p:message for="discipline" />						
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludePpcDiscipline.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{ppcDisciplineBean.save}"
+			    					update =":formIncludePpcDiscipline:msgGeral, :formListPpcDiscipline, savePpcDisciplineGrid"
+			    					id="buttonSavePpcDiscipline"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

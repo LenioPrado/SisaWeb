@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_campus_course_page}</title>
+		<script type="text/javascript" src="#{request.contextPath}/js/expander.js"></script>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		<ui:include src="includeCampusCourse.xhtml" />
+	
+		<h:form id="formListCampusCourse" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_campus_course}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="campusCoursesTable" fileName="#{msg.file_campus_course}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_pdf}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="campusCoursesTable" fileName="#{msg.file_campus_course}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+					
+					<p:outputPanel styleClass="emptyPanel">
+					</p:outputPanel>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+	
+				<p:dataTable id="campusCoursesTable" var="element" styleClass="tableList scrollTableFixedHeight"
+					value="#{campusCourseBean.campusList}" paginator="true" rowIndexVar="rowIndex"
+					paginatorPosition="bottom" rows="10"			
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="campusCoursesTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{campusCourseBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+					
+					<p:ajax event="rowToggle" onstart="closeOpennedExpander();"/>  
+		        
+					<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>			        
+        
+					<p:column width="450"
+							headerText="#{msg.lbl_name_campus}"
+							sortBy="#{element.name}"
+							filterBy="#{element.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.name}" title="#{element.name}"/>
+					</p:column>
+					<p:column width="120"
+							headerText="#{msg.lbl_cnpj_campus}"
+							sortBy="#{element.cnpj}"
+							filterBy="#{element.cnpj}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.cnpj}" title="#{element.cnpj}"/>
+					</p:column>
+					<p:column width="250"
+							headerText="#{msg.lbl_rectory_campus}"
+							sortBy="#{element.rectory.name}"
+							filterBy="#{element.rectory.name}"
+							filterMatchMode="contains"
+							styleClass="inputFilterText">
+						<h:outputText value="#{element.rectory.name}" title="#{element.rectory.name}"/>
+					</p:column>
+					
+					<p:column styleClass="columnEditDelete" exportable="false" rendered="#{campusCourseBean.canEdit}">
+						<p:commandLink title="#{msg.lbl_edit_campus_course}" ajax="true"
+							actionListener="#{campusCourseBean.loadCampusCourse(element)}"
+							update=":formIncludeCampusCourse"
+							oncomplete="PF('saveCampusCourseDialog').show()">
+							<p:graphicImage value="/images/bt-editar.png" />
+						</p:commandLink>
+					</p:column>					
+					
+					<p:rowExpansion style="padding:0px;">
+			            <f:facet name="header">
+							<h:outputText value="#{msg.lbl_campus_campus_course}" />
+						</f:facet>				    
+				        
+				        <p:dataTable styleClass="tableList"
+				            value="#{element.courses}"
+				            var="subelement"
+				            filteredValue="#{campusCourseBean.subFiltered}"
+				            emptyMessage="#{msg.lbl_no_records_found}">
+				            
+							<p:column headerText="#{msg.lbl_name_course}"
+									sortBy="#{subelement.name}"
+									filterBy="#{subelement.name}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.name}" title="#{subelement.name}"/>
+							</p:column>
+							<p:column headerText="#{msg.lbl_short_name_course}"
+									sortBy="#{subelement.shortName}"
+									filterBy="#{subelement.shortName}"
+									filterMatchMode="contains">
+								<h:outputText value="#{subelement.shortName}" title="#{subelement.shortName}"/>
+							</p:column>					
+							<p:column headerText="#{msg.lbl_modality_course}"
+									sortBy="#{enumHelper.getModalityLabel(subelement.modality)}"
+									filterBy="#{enumHelper.getModalityLabel(subelement.modality)}"
+									filterMatchMode="contains">									
+								<h:outputText value="#{enumHelper.getModalityLabel(subelement.modality)}" title="#{enumHelper.getModalityLabel(subelement.modality)}"/>
+							</p:column>
+							<p:column headerText="#{msg.lbl_shift_course}"
+									sortBy="#{enumHelper.getShiftLabel(subelement.shift)}"
+									filterBy="#{enumHelper.getShiftLabel(subelement.shift)}"
+									filterMatchMode="contains">
+								<h:outputText value="#{enumHelper.getShiftLabel(subelement.shift)}" title="#{enumHelper.getShiftLabel(subelement.shift)}"/>
+							</p:column>
+				            
+							<p:column styleClass="columnEditDelete" exportable="false" rendered="#{campusCourseBean.canDelete}">
+								<p:commandLink title="#{msg.lbl_delete_campus_course}" ajax="true"
+									actionListener="#{campusCourseBean.delete(element, subelement)}"
+									update=":formListCampusCourse">
+									<p:graphicImage value="/images/bt-deletar.png" />
+								</p:commandLink>
+							</p:column>					            
+				            
+				        </p:dataTable>
+			        </p:rowExpansion>		
+
+				</p:dataTable>
+	
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

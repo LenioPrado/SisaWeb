@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+	<h:head>		
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/site.css" />
+		<title>#{msg.title_list_teaching_plan_verifications_page}</title>
+		<script type="text/javascript" src="#{request.contextPath}/js/expander.js"></script>
+	</h:head>
+
+    <h:body>    
+		<ui:include src="header.xhtml" />
+		<ui:include src="menu.xhtml" />
+		
+		<h:form id="formListTeachingPlanVerification" prependId="false">		
+			<p:outputPanel styleClass="form">
+	
+				<p:outputPanel styleClass="fixedHeightPanel">
+					<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_teaching_plan_verification}" />
+		
+					<p:outputPanel styleClass="export">
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+							<p:dataExporter type="csv" target="teachingPlanVerificationTable" fileName="#{msg.file_teaching_plan_verification}" pageOnly="false" encoding="UTF-8"/>
+						</h:commandLink>
+						<h:commandLink title="#{msg.lbl_export_excel}">
+							<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+							<p:dataExporter type="pdf" target="teachingPlanVerificationTable" fileName="#{msg.file_teaching_plan_verification}" pageOnly="false" encoding="iso-8859-1"/>
+						</h:commandLink>
+					</p:outputPanel>
+	
+					<p:outputPanel styleClass="emptyPanel"/>
+				</p:outputPanel>
+				
+				<p:messages for="msgGeral" showDetail="true" showSummary="true" />
+				
+				<p:dataTable id="teachingPlanVerificationTable" var="element" styleClass="tableList scrollTableFixedHeight"
+					value="#{teachingPlanVerificationBean.teachingPlansList}" paginator="true" rowIndexVar="rowIndex"
+					paginatorPosition="bottom" rows="10"				
+					rowsPerPageTemplate="10,20,30,40,50" widgetVar="teachingPlanVerificationTable"
+					scrollable="true" scrollHeight="300" scrollWidth="100%"
+					filteredValue="#{teachingPlanVerificationBean.filtered}"
+					emptyMessage="#{msg.lbl_no_records_found}">
+					
+					<p:ajax event="rowToggle" onstart="closeOpennedExpander();"/>  
+		        
+					<p:column style="width:16px" exportable="false">
+			            <p:rowToggler />
+			        </p:column>			        
+        
+					<p:column width="150"
+							headerText="#{msg.lbl_academic_period_teaching_plan}"
+							sortBy="#{element.academicPeriod.semester}/#{element.academicPeriod.year}"
+							filterBy="#{element.academicPeriod.semester}/#{element.academicPeriod.year}"
+							filterMatchMode="contains">
+						<h:outputText value="#{element.academicPeriod.semester}/#{element.academicPeriod.year}" title="#{element.academicPeriod.semester}/#{element.academicPeriod.year}"/>
+					</p:column>	
+					<p:column width="500"
+						headerText="#{msg.lbl_ppc_teaching_plan}"
+						sortBy="#{element.ppcDiscipline.ppc.course.name}"
+						filterBy="#{element.ppcDiscipline.ppc.course.name}"
+						filterMatchMode="in">
+						<h:outputText value="#{element.ppcDiscipline.ppc.course.name}" title="#{element.ppcDiscipline.ppc.course.name}"/>
+					</p:column>
+					<p:column width="500"
+						headerText="#{msg.lbl_discipline_teaching_plan}"
+						sortBy="#{element.ppcDiscipline.discipline.name}"
+						filterBy="#{element.ppcDiscipline.discipline.name}"
+						filterMatchMode="in">
+						<h:outputText value="#{element.ppcDiscipline.discipline.name}" title="#{element.ppcDiscipline.discipline.name}"/>
+					</p:column>	
+					<p:column width="500"
+						headerText="#{msg.lbl_teacher_teaching_plan}"
+						sortBy="#{element.teacher.name}"
+						filterBy="#{element.teacher.name}"
+						filterMatchMode="in">
+						<h:outputText value="#{element.teacher.name}" title="#{element.teacher.name}"/>
+					</p:column>	
+				
+					<p:rowExpansion style="padding:0px;">
+			            <f:facet name="header">
+							<h:outputText value="#{msg.lbl_discipline_ppc_discipline}" />
+						</f:facet>
+
+				        <p:dataTable styleClass="tableList"
+				            value="#{element.verifications}"
+				            var="subelement"
+				            filteredValue="#{teachingPlanVerificationBean.subFiltered}"
+				            emptyMessage="#{msg.lbl_no_records_found}">
+				            
+								<p:column sortBy="#{subelement.creationDate}"
+										headerText="#{msg.lbl_creation_date_verification}">
+									<h:outputText value="#{subelement.creationDate}" title="#{subelement.creationDateTitle}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+									</h:outputText>
+								</p:column>
+								<p:column sortBy="#{subelement.evaluationDate}"
+										headerText="#{msg.lbl_evaluation_date_verification}">
+									<f:facet name="header">
+										<h:outputText value="#{msg.lbl_evaluation_date_verification}" />
+									</f:facet>
+									<h:outputText value="#{subelement.evaluationDate}" title="#{subelement.evaluationDateTitle}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+									</h:outputText>
+								</p:column>					
+								<p:column headerText="#{msg.lbl_observation_verification}"
+										sortBy="#{subelement.observation}"
+										filterBy="#{subelement.observation}"
+										filterMatchMode="contains">
+									<h:outputText value="#{subelement.observation}" title="#{subelement.observation}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_status_verification}"
+									sortBy="#{enumHelper.getVerificationStatusLabel(subelement.status)}"
+									filterBy="#{enumHelper.getVerificationStatusLabel(subelement.status)}"
+									filterMatchMode="in">
+									<h:outputText value="#{enumHelper.getVerificationStatusLabel(subelement.status)}" title="#{enumHelper.getVerificationStatusLabel(subelement.status)}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_teaching_plan_verification}"
+									sortBy="#{subelement.responsible.teachingPlan.teachingPlanLabel}"
+									filterBy="#{subelement.responsible.teachingPlan.teachingPlanLabel}"
+									filterMatchMode="in">
+									<h:outputText value="#{subelement.responsible.teachingPlan.teachingPlanLabel}" title="#{subelement.responsible.teachingPlan.teachingPlanLabel}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_role_verification}"
+									sortBy="#{subelement.responsible.userRole.role.name}"
+									filterBy="#{subelement.responsible.userRole.role.name}"
+									filterMatchMode="in">
+									<h:outputText value="#{subelement.responsible.userRole.role.name}" title="#{subelement.responsible.userRole.role.name}"/>
+								</p:column>						
+								<p:column headerText="#{msg.lbl_user_verification}"
+									sortBy="#{subelement.responsible.userRole.user.name}"
+									filterBy="#{subelement.responsible.userRole.user.name}"
+									filterMatchMode="in">
+									<h:outputText value="#{subelement.responsible.userRole.user.name}" title="#{subelement.responsible.userRole.user.name}"/>
+								</p:column>			            
+				            
+				        </p:dataTable>
+			        </p:rowExpansion>		
+
+				</p:dataTable>					
+			</p:outputPanel>
+	
+		</h:form>
+	
+		<ui:include src="footer.xhtml" />
+    </h:body>
+
+</html>

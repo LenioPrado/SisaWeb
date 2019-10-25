@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:form id="formListProcedureEvaluation" prependId="false">		
+		<p:outputPanel styleClass="form">
+
+			<p:outputPanel styleClass="fixedHeightPanel">
+				<p:outputLabel styleClass="pageTitle alignTitle" value="#{msg.lbl_list_procedure_evaluation}" />
+	
+				<p:outputPanel styleClass="export">
+					<h:commandLink title="#{msg.lbl_export_excel}">
+						<p:graphicImage styleClass="iconExcel" value="/images/ic-excel.png" />
+						<p:dataExporter type="csv" target="procedureEvaluationsTable" fileName="#{msg.file_procedure_evaluation}" pageOnly="false" encoding="UTF-8"/>
+					</h:commandLink>
+					<h:commandLink title="#{msg.lbl_export_pdf}">
+						<p:graphicImage styleClass="iconPdf" value="/images/ic-pdf.png" />
+						<p:dataExporter type="pdf" target="procedureEvaluationsTable" fileName="#{msg.file_procedure_evaluation}" pageOnly="false" encoding="iso-8859-1"/>
+					</h:commandLink>
+				</p:outputPanel>
+	
+				<p:commandButton styleClass="btnAdd" icon="ui-icon-plusthick"
+					ajax="true" value="#{msg.lbl_add_entity}"
+					rendered="#{bean.canInsert}"
+					oncomplete="PF('saveProcedureEvaluationDialog').show()"
+					update=":formIncludeProcedureEvaluation"
+					actionListener="#{bean.cleanProcedureEvaluation}">
+					<p:ajax update=":formIncludeProcedureEvaluation" resetValues="true" />  
+				</p:commandButton>
+				
+				<p:commandButton styleClass="btnAdd" icon="ui-icon-back"
+					ajax="true" value="#{msg.lbl_back_to_teaching_plan_fill}"
+					rendered="#{!bean.teachingPlanIsVisible}"					
+					action="#{bean.backToTeachingPlanFill}"/>
+			</p:outputPanel>
+			
+			<p:messages for="msgGeral" showDetail="true" showSummary="true" />	
+			
+			<p:dataTable id="procedureEvaluationsTable" var="element" styleClass="tableList"
+				value="#{bean.procedureEvaluationsList}" paginator="true" rowIndexVar="rowIndex" 
+				paginatorPosition="bottom" rows="10"
+				rowsPerPageTemplate="10,20,30,40,50" widgetVar="procedureEvaluationsTable"
+				scrollable="true" scrollHeight="300" scrollWidth="100%"
+				filteredValue="#{bean.filtered}"
+				emptyMessage="#{msg.lbl_no_records_found}">
+					
+				<p:column width="120"
+						headerText="#{msg.lbl_date_procedure_evaluation}"
+						sortBy="#{element.date}">
+					<h:outputText value="#{element.date}" title="#{element.dateTitle}" >							
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				<p:column width="500"
+					headerText="#{msg.lbl_teaching_plan_procedure_evaluation}"
+					sortBy="#{element.teachingPlan.teachingPlanLabel}"
+					filterBy="#{element.teachingPlan.teachingPlanLabel}"
+					filterMatchMode="in">
+					<f:facet name="filter">
+						<p:selectCheckboxMenu label="#{msg.lbl_teaching_plans}" 
+								onchange="PF('procedureEvaluationsTable').filter()" 
+								styleClass="inputFilterSelect" >
+		                    <f:selectItems value="#{teachingPlanBean.teachingPlansList}" 
+           						var="element" 
+           						itemValue="#{element.teachingPlanLabel}" 
+           						itemLabel="#{element.teachingPlanLabel}" />
+		                </p:selectCheckboxMenu>
+					</f:facet>
+					<h:outputText value="#{element.teachingPlan.teachingPlanLabel}" title="#{element.teachingPlan.teachingPlanLabel}"/>
+
+				</p:column>
+				<p:column width="450"
+						headerText="#{msg.lbl_observation_procedure_evaluation}"
+						sortBy="#{element.observation}"
+						filterBy="#{element.observation}"
+						filterMatchMode="contains"
+						styleClass="inputFilterText">
+					<h:outputText value="#{element.observation}" title="#{element.observation}"/>
+				</p:column>
+				<p:column width="450"
+						headerText="#{msg.lbl_evaluation_procedure_evaluation}"
+						sortBy="#{element.evaluation.name}"
+						filterBy="#{element.evaluation.name}"
+						filterMatchMode="contains"
+						styleClass="inputFilterText">
+					<h:outputText value="#{element.evaluation.name}" title="#{element.evaluation.name}"/>
+				</p:column>
+				
+				<p:column styleClass="columnEditDelete" exportable="false"
+						  rendered="#{bean.canEdit}">
+					<p:commandLink title="#{msg.lbl_edit_procedure_evaluation}" ajax="true"
+						actionListener="#{bean.loadProcedureEvaluation(element)}"
+						update=":formIncludeProcedureEvaluation"
+						oncomplete="PF('saveProcedureEvaluationDialog').show()">
+						<p:graphicImage value="/images/bt-editar.png" />
+					</p:commandLink>
+				</p:column>
+				<p:column styleClass="columnEditDelete" exportable="false"
+						  rendered="#{bean.canDelete}">
+					<p:commandLink title="#{msg.lbl_delete_procedure_evaluation}" ajax="true"
+						actionListener="#{bean.delete(element)}"
+						update=":formListProcedureEvaluation">
+						<p:graphicImage value="/images/bt-deletar.png" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+
+		</p:outputPanel>
+
+	</h:form>
+
+</html>

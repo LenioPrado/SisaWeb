@@ -1,0 +1,6 @@
+1) Visão dos usuários do sistema a respeito dos plano de ensino pendentes de avaliação.
+2) Tela para os avaliadores realizarem a avaliação do plano de ensino, informando status.
+3) Tela para envio do plano de ensino para avaliação.
+4) Tela para visualizar o status das avaliações de um plano de ensino.
+5) Corrigir os erros existentes.
+6) Inserir professor na tabela planos de ensino.

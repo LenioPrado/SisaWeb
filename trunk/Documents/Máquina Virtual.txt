@@ -1,0 +1,16 @@
+A VM pode ser acessada via SSH:
+- Host: www6.pcs.ifsuldeminas.local
+- Usuário: root
+- Senha: k29df6jd6kgd92h8
+Obs.: Só é possível acessar de dentro do campus.
+
+MySQL Host: dbms04.services.nti.pcs.ifsuldeminas.local
+MySQL Database: sisa
+
+User Admin: sisa_admin
+MySQL Password: lshsyrqz2msi4yds
+Privilégios: Todos, exceto grant
+
+TomCat Manager
+User: admin
+Pass: ornitorrinco

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">  
+    
+    <h:head>  
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/login.css" />
+		<title>#{msg.title_select_role_page}</title>  
+    </h:head>  
+      
+    <h:body>
+    	
+    	<ui:define name="metadata">
+		    <f:metadata>
+		        <f:viewParam name="dummy"/>
+		        <f:event type="preRenderView" listener="#{loginBean.loadLoggedUser}"/>
+		    </f:metadata>
+		</ui:define>
+		
+    	<ui:include src="headerLogin.xhtml" />
+    	<p:outputPanel styleClass="top-main-page"></p:outputPanel>
+    	
+    	<f:view>
+	    	<div class="adminPanel">
+				<p:toolbar styleClass="loginPanel">
+				   	<f:facet name="left">
+					   	<h:form id="form">
+					    	<p:outputLabel styleClass="labels" value="#{msg.lbl_name_user}"/>
+					    	<p:inputText readonly="true" id="name" required="true" value="#{loginBean.loggedUser.name}" requiredMessage="#{msg.lbl_required_field}"/>
+					    	<p:outputPanel styleClass="message">
+					    		<p:message for="name" />
+					    	</p:outputPanel>
+					    	
+					    	<p:outputLabel styleClass="labels" value="#{msg.lbl_email_user}"/>
+					    	<p:inputText readonly="true" id="email" required="true" value="#{loginBean.loggedUser.email}" requiredMessage="#{msg.lbl_required_field}"/>
+					    	<p:outputPanel styleClass="message">
+					    		<p:message for="email" />
+							</p:outputPanel>
+							
+							<p:outputLabel styleClass="labels" value="#{msg.lbl_role_user}"/>
+							<p:outputPanel style="margin-left: 60px;">
+								<p:selectOneMenu id="role" 
+										value="#{loginBean.role}"
+										style="width: 287px !important;"
+										converter="roleConverter">
+									<f:selectItems 
+		           						value="#{loginBean.rolesList}" 
+		           						var="element" 
+		           						itemValue="#{element}" 
+		           						itemLabel="#{element.name}"/>								
+						        </p:selectOneMenu>
+						    </p:outputPanel>
+					        <p:outputPanel styleClass="message">
+					    		<p:message for="role" />
+							</p:outputPanel>							
+										            
+			            	<p:commandButton styleClass="btnLogin" style="margin-right:0px;" value="#{msg.lbl_confirm}" id="enter" action="#{loginBean.enter()}" ajax="false"/>
+						</h:form>
+					</f:facet>
+				</p:toolbar>
+				<p:messages id="msg" for="msg" showDetail="true" showSummary="true" />
+	    	</div>
+	    </f:view>
+	    
+	    <ui:include src="footer.xhtml" />
+	    
+    </h:body>  
+</html>  

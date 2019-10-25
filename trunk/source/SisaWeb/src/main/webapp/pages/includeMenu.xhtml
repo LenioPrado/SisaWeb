@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveMenuDiag" widgetVar="saveMenuDialog" resizable="true" modal="true">
+			<h:form id="formIncludeMenu" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_menu}" />
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveMenuGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="parent" value="#{msg.lbl_parent_menu}"/>
+							<p:selectOneMenu id="parent"
+	                      			value="#{menuBean.menu.parent}"
+	                      			styleClass="inputSelect" 
+	                      			converter="menuConverter"
+	                      			disabled="#{menuBean.selectedNode != null or menuBean.menu.parent == null}"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItems 
+	           						value="#{menuBean.menusList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.description}"/>
+	       					</p:selectOneMenu>
+							<h:outputText/>
+							
+							<p:outputLabel for="description" value="#{msg.lbl_description_menu}"/>
+							<p:inputText id="description" 
+								value="#{menuBean.menu.description}"  
+								styleClass="inputs"
+								maxlength="50"
+								required="true" 
+					   	    	requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="description" />													
+							
+							<p:outputLabel for="page" value="#{msg.lbl_page_menu}"/>
+							<p:selectOneMenu id="page"
+	                      			value="#{menuBean.menu.page}"
+	                      			styleClass="inputSelect" 
+	                      			converter="pageConverter"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+					   			<f:selectItem itemLabel="#{msg.lbl_select_an_option}" 
+						   				noSelectionOption="true"/>
+	           					<f:selectItems 
+	           						value="#{pageBean.pagesList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}"/>
+	       					</p:selectOneMenu>
+							<h:outputText/>
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeMenu.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{menuBean.save}"
+			    					update =":formIncludeMenu:msgGeral, :formListMenu, saveMenuGrid :formMenu"
+			    					id="buttonSaveMenu"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+	xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+    
+	<converter>  
+		<converter-id>floatConverter</converter-id>  
+		<converter-class>br.edu.pcs.ifsulmg.sisa.web.converter.FloatConverter</converter-class>  
+	</converter>
+	<converter>  
+		<converter-id>timeFullConverter</converter-id>  
+		<converter-class>br.edu.pcs.ifsulmg.sisa.web.converter.TimeFullConverter</converter-class>  
+	</converter>     
+    
+	<lifecycle>
+		<phase-listener>br.edu.pcs.ifsulmg.sisa.web.interceptor.RequestInterceptor</phase-listener>
+	</lifecycle>    
+	
+	<application>
+	 	<locale-config>
+            <default-locale>pt_BR</default-locale>
+        </locale-config>
+		<resource-bundle>
+			<base-name>message</base-name>
+			<var>msg</var>
+		</resource-bundle>
+	</application>	
+
+</faces-config>

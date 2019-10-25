@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>		
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveRoleDiag" widgetVar="saveRoleDialog" resizable="true" modal="true">
+			<h:form id="formIncludeRole" prependId="false">
+    			
+    			<p:outputPanel styleClass="form">
+				
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_role}" rendered="#{roleBean.editRole}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_role}" rendered="#{!roleBean.editRole}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />	
+				   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveRoleGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="nameRole" value="#{msg.lbl_name_role}"/>
+							<p:inputText id="nameRole" 
+								value="#{roleBean.role.name}"  
+								styleClass="inputs"
+								maxlength="80"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="nameRole" />
+							
+							<p:outputLabel for="observations" value="#{msg.lbl_observation_role}"/>
+							<p:inputText id="observations" 
+								value="#{roleBean.role.observation}"  
+								styleClass="inputs"
+								maxlength="200"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="observations" />
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeRole.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{roleBean.save}"
+			    					update =":formIncludeRole:msgGeral, :formListRole, saveRoleGrid"
+			    					id="buttonSaveRole"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>

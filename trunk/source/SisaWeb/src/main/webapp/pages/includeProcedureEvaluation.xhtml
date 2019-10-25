@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	</h:head>
+
+ <h:body>	
+		<p:dialog id="saveProcedureEvaluationDiag" widgetVar="saveProcedureEvaluationDialog" resizable="true" modal="true">
+			<h:form id="formIncludeProcedureEvaluation" prependId="false">
+    			  
+   			  <p:outputPanel styleClass="form">	  	
+   			  		
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_edit_procedure_evaluation}" rendered="#{bean.editProcedureEvaluation}"/>
+					<p:outputLabel styleClass="pageTitle" value="#{msg.lbl_include_procedure_evaluation}" rendered="#{!bean.editProcedureEvaluation}"/>
+					<p:messages id="msgGeral" for="msgGeral" showDetail="true" showSummary="true" />
+					   	
+				   	<p:panel>				   	
+			            <h:panelGrid id="saveProcedureEvaluationGrid" columns="3" columnClasses="labels">		
+							
+							<p:outputLabel for="date" value="#{msg.lbl_date_procedure_evaluation}"/>
+							<p:calendar id="date"
+										value="#{bean.procedureEvaluation.date}" 
+										pattern="dd/MM/yyyy"
+										mask="true"
+										styleClass="inputs"										
+										showOn="button"
+										locale="pt_BR" 
+										required="true" 
+										requiredMessage="#{msg.lbl_required_field}"/>										
+							<p:message for="date" />
+							
+							<p:outputLabel for="observation" value="#{msg.lbl_observation_procedure_evaluation}"/>
+							<p:inputText id="observation" 
+								value="#{bean.procedureEvaluation.observation}"  
+								styleClass="inputs"
+								maxlength="200"
+								required="true"
+					   			requiredMessage="#{msg.lbl_required_field}" />
+							<p:message for="observation" />
+				   									
+							<p:outputLabel for="evaluation" value="#{msg.lbl_evaluation_procedure_evaluation}"/>
+							<p:selectOneMenu id="evaluation"
+	                      			value="#{bean.procedureEvaluation.evaluation}"
+	                      			converter="evaluationConverter"
+	                      			styleClass="inputSelect"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}" >
+	           					<f:selectItems 
+	           						value="#{evaluationBean.evaluationsList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.name}" />
+	       					</p:selectOneMenu>
+					        <p:message for="evaluation" />
+					        
+					        <p:outputLabel rendered="#{bean.teachingPlanIsVisible}"
+					        		for="teachingPlan" value="#{msg.lbl_teaching_plan_procedure_evaluation}"/>
+							<p:selectOneMenu id="teachingPlan"
+	                      			value="#{bean.procedureEvaluation.teachingPlan}"
+	                      			converter="teachingPlanConverter"
+	                      			rendered="#{bean.teachingPlanIsVisible}"
+	                      			styleClass="inputSelect"
+	                      			required="true"
+					   				requiredMessage="#{msg.lbl_required_field}">
+	           					<f:selectItems 
+	           						value="#{teachingPlanBean.teachingPlansList}" 
+	           						var="element" 
+	           						itemValue="#{element}" 
+	           						itemLabel="#{element.teachingPlanLabel}" />
+	       					</p:selectOneMenu>
+					        <p:message for="teachingPlan" rendered="#{bean.teachingPlanIsVisible}"/>
+					        
+					   	</h:panelGrid>
+					   	
+					   	<p:separator styleClass="separator"/>
+					   	
+					   	<h:panelGroup styleClass="btnSave">
+				   			<p:commandButton value="#{msg.lbl_cancel}"
+									styleClass="btnCancel"
+			    					onclick="formIncludeProcedureEvaluation.hide();"
+			    					process="@this"
+			    					immediate="true"
+									ajax="true"/>
+	       				
+	       						<p:commandButton value="Salvar"
+	       							ajax="true"
+			    					actionListener="#{bean.save}"
+			    					update =":formIncludeProcedureEvaluation:msgGeral, :formListProcedureEvaluation, saveProcedureEvaluationGrid"
+			    					id="buttonSaveProcedureEvaluation"/>	    					
+			      		</h:panelGroup>
+					</p:panel>
+					
+				 	<h:outputText value="#{msg.lbl_required_field_message}" styleClass="requiredFields" />
+			    </p:outputPanel>
+			
+			</h:form>
+		</p:dialog>		
+	</h:body>
+</html>
